@@ -77,7 +77,7 @@ async function submitForm3(event) {
     };
 
     try {
-        let response = await fetch(`https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Proveedores?id_proveedor=eq.${idProveedor}`, {
+        let response = await fetch(https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Proveedores?id_proveedor=eq.${idProveedor}, {
             method: "PATCH",
             body: bodyContent,
             headers: headersList

@@ -60,9 +60,7 @@ include 'componentes/sidebar.php';
        title="<?php echo $cliente['estado'] ? 'Desactivar Cliente' : 'Activar Cliente'; ?>">
     <input type="checkbox" 
            class="custom-switch-input estado-switch"
-           data-id="<?php echo $cliente['id_cliente']; ?>"
-           <?php echo $cliente['estado'] ? 'checked' : ''; ?>>
-    <span class="custom-switch-indicator"></span>
+           data-id="<?php echo $cliente['id_cliente']; ?>" data-tipo="cliente" <?php echo $cliente['estado'] ? 'checked' : ''; ?>> <span class="custom-switch-indicator"></span>
 </label>
     </div>
                                             </td>

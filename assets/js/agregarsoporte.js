@@ -14,6 +14,7 @@ async function obtenerNuevoIdSoporte() {
             const ultimoSoporte = soportes[0];
             const nuevoIdSoporte = ultimoSoporte ? ultimoSoporte.id_soporte + 1 : 1;
             return nuevoIdSoporte;
+            console.log(nuevoIdSoporte,"ID SOPORTE");
         } else {
             console.error("Error al obtener el último ID de soporte:", await response.text());
             throw new Error("Error al obtener el último ID de soporte");
@@ -37,7 +38,7 @@ function getFormDataSoporte() {
             dataObject[key] = value;
         }
     });
-    console.log(dataObject, "hola");
+
     return {
         ...dataObject,  // Retorna todos los valores de dataObject
         created_at: new Date().toISOString()
@@ -70,8 +71,9 @@ async function submitFormSoporte(event) {
             telFijo: formData.telFijoo,
             email: formData.emailO || null,
             bonificacion_ano: formData.bonificacion_ano,
-            escala: formData.escala
+            escala: formData.escala_rango
         };
+
     } else {
         // Usar los datos ingresados manualmente
         soporteData = {
@@ -92,8 +94,9 @@ async function submitFormSoporte(event) {
             telFijo: formData.telFijo,
             email: formData.email || null,
             bonificacion_ano: formData.bonificacion_ano,
-            escala: formData.escala
+            escala: formData.escala_rango
         };
+  
     }
 
     try {
@@ -107,7 +110,7 @@ async function submitFormSoporte(event) {
         "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc"
             }
         });
-
+        console.log(responseSoporte,"soporte agregado se supone");
         if (responseSoporte.ok) {
             console.log("Soporte registrado correctamente");
 
@@ -116,7 +119,7 @@ async function submitFormSoporte(event) {
                 id_soporte: nuevoIdSoporte, // Usar el ID generado
                 id_medio: id_medio
             }));
-
+            console.log(soporteMediosData,"medios");
             let responseSoporteMedios = await fetch("https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/soporte_medios", {
                 method: "POST",
                 body: JSON.stringify(soporteMediosData),

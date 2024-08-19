@@ -8,11 +8,10 @@ ini_set('display_errors', 1);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validar y sanitizar la entrada
-    $id = filter_input(INPUT_POST, 'id', FILTER_VALIDATE_INT);
-    $estado = filter_input(INPUT_POST, 'estado', FILTER_VALIDATE_INT);
-    $tipo = filter_input(INPUT_POST, 'tipo', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $id = filter_input(INPUT_POST, 'id_proveedor', FILTER_VALIDATE_INT);
+    $estado = filter_input(INPUT_POST, 'Estado', FILTER_VALIDATE_INT);
 
-    if ($id === false || $id === null || $estado === false || $estado === null || !in_array($tipo, ['plan', 'cliente', 'proveedor'])) {
+    if ($id === false || $id === null || $estado === false || $estado === null) {
         echo json_encode(['success' => false, 'message' => 'Datos de entrada inválidos']);
         exit;
     }
@@ -44,30 +43,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         return ['response' => $response, 'httpCode' => $httpCode];
     }
 
-    // Determinar la URL y el ID de campo correcto basado en el tipo
-    if ($tipo === 'plan') {
-        $url = "https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/PlanesPublicidad?id_planes_publicidad=eq.$id";
-        $idField = 'id_planes_publicidad';
-    }elseif ($tipo === 'cliente') {
-        $url = "https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Clientes?id_cliente=eq.$id";
-        $idField = 'id_cliente';
-    }elseif ($tipo === 'proveedor'){
-        $url = "https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Proveedores?id_proveedor=eq.$id";
-        $idField = 'id_proveedor';
-    }
-
+    // URL de la API de Supabase para actualizar el registro
+    $url = "https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Proveedores?id_proveedor=eq.$id";
+    
     // Datos a actualizar
     $data = array('estado' => $estado);
-
+    
     // Hacer la petición PATCH para actualizar el registro
     $result = makeRequest($url, 'PATCH', $data);
-
+    
     if ($result['httpCode'] == 204) {
         echo json_encode(['success' => true, 'message' => 'Estado actualizado correctamente']);
     } else {
         echo json_encode([
             'success' => false, 
-            'message' => 'Error al actualizar el estado',
+            'message' => 'Error al actualizar el estado', 
             'details' => $result['response'],
             'httpCode' => $result['httpCode']
         ]);

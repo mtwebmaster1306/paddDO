@@ -58,26 +58,27 @@ include 'componentes/sidebar.php';
                             </div>
                         </div>
                         <div class="card-body">
-                            <div class="table-responsive">
-                            <table class="table table-striped" id="tableExportadora">
-    <thead>
-        <tr>
-            <th></th>
-            <th>ID</th>
-            <th>Medio</th>
-            <th>Nombre Proveedores</th>
-            <th>Razón Social</th>
-            <th>Rut</th>
-            <th>N° de Soportes</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php foreach ($proveedores as $proveedor): ?>
-        <tr class="proveedor-row" data-proveedor-id="<?php echo $proveedor['id_proveedor']; ?>">
-            <td><i class="expand-icon fas fa-angle-right"></i></td>
-            <td><?php echo $proveedor['id_proveedor']; ?></td>
-            <td>
+                        <div class="table-responsive">
+                                <table class="table table-striped" id="tableExportadora">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>ID</th>
+                                            <th>Medio</th>
+                                            <th>Nombre Proveedores</th>
+                                            <th>Razón Social</th>
+                                            <th>Rut</th>
+                                            <th>N° de Soportes</th>
+                                            <th>Estado</th>
+                                            <th>Acciones</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($proveedores as $proveedor): ?>
+                                        <tr class="proveedor-row" data-proveedor-id="<?php echo $proveedor['id_proveedor']; ?>">
+                                            <td><i class="expand-icon fas fa-angle-right"></i></td>
+                                            <td><?php echo $proveedor['id_proveedor']; ?></td>
+                                            <td>
                                                                                                         <?php
                                                             // Paso 1: Obtener todos los id_medios para un id_proveedor específico
                                                             $id_proveedor = $proveedor['id_proveedor'];
@@ -114,66 +115,61 @@ include 'componentes/sidebar.php';
                                                             <svg width="24" data-bs-toggle="tooltip" data-bs-html="true" title="<?php echo $tooltip_content; ?>" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="dist_marketing-btn-icon__AWP8I"><path fill-rule="evenodd" clip-rule="evenodd" d="M24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24C18.6274 24 24 18.6274 24 12ZM13.0033 22.3936C12.574 22.8778 12.2326 23 12 23C11.7674 23 11.426 22.8778 10.9967 22.3936C10.5683 21.9105 10.1369 21.1543 9.75435 20.1342C9.3566 19.0735 9.03245 17.7835 8.81337 16.3341C9.8819 16.1055 10.9934 15.9922 12.1138 16.0004C13.1578 16.0081 14.1912 16.1211 15.1866 16.3341C14.9675 17.7835 14.6434 19.0735 14.2457 20.1342C13.8631 21.1543 13.4317 21.9105 13.0033 22.3936ZM15.3174 15.3396C14.2782 15.1229 13.2039 15.0084 12.1211 15.0004C10.9572 14.9919 9.7999 15.1066 8.68263 15.3396C8.58137 14.4389 8.51961 13.4874 8.50396 12.5H15.496C15.4804 13.4875 15.4186 14.4389 15.3174 15.3396ZM16.1609 16.5779C15.736 19.3214 14.9407 21.5529 13.9411 22.8293C16.6214 22.3521 18.9658 20.9042 20.5978 18.862C19.6345 18.0597 18.4693 17.3939 17.1586 16.9062C16.8326 16.7849 16.4997 16.6754 16.1609 16.5779ZM21.1871 18.0517C20.1389 17.1891 18.8906 16.4837 17.5074 15.969C17.1122 15.822 16.708 15.6912 16.2967 15.5771C16.411 14.5992 16.4798 13.5676 16.4962 12.5H22.9888C22.8973 14.5456 22.2471 16.4458 21.1871 18.0517ZM7.70333 15.5771C7.58896 14.5992 7.52024 13.5676 7.50384 12.5H1.01116C1.10267 14.5456 1.75288 16.4458 2.81287 18.0517C3.91698 17.1431 5.24216 16.4096 6.71159 15.8895C7.0368 15.7744 7.3677 15.6702 7.70333 15.5771ZM3.40224 18.862C5.03424 20.9042 7.37862 22.3521 10.0589 22.8293C9.05934 21.5529 8.26398 19.3214 7.83906 16.5779C7.57069 16.6552 7.3059 16.74 7.04526 16.8322C5.65305 17.325 4.41634 18.0173 3.40224 18.862ZM15.496 11.5H8.50396C8.51961 10.5126 8.58136 9.56113 8.68263 8.66039C9.84251 8.90232 11.0448 9.01653 12.2521 8.99807C13.2906 8.9822 14.3202 8.86837 15.3174 8.66039C15.4186 9.56113 15.4804 10.5126 15.496 11.5ZM9.75435 3.86584C9.3566 4.9265 9.03245 6.21653 8.81337 7.66594C9.92191 7.90306 11.0758 8.01594 12.2369 7.99819C13.2391 7.98287 14.2304 7.87047 15.1866 7.66594C14.9675 6.21653 14.6434 4.9265 14.2457 3.86584C13.8631 2.84566 13.4317 2.08954 13.0033 1.60643C12.574 1.12215 12.2326 1 12 1C11.7674 1 11.426 1.12215 10.9967 1.60643C10.5683 2.08954 10.1369 2.84566 9.75435 3.86584ZM16.4962 11.5C16.4798 10.4324 16.411 9.40077 16.2967 8.42286C16.6839 8.31543 17.0648 8.19328 17.4378 8.05666C18.848 7.54016 20.1208 6.82586 21.1871 5.94826C22.2471 7.55418 22.8973 9.4544 22.9888 11.5H16.4962ZM17.0939 7.11766C18.4298 6.62836 19.6178 5.95419 20.5978 5.13796C18.9658 3.09584 16.6214 1.64793 13.9411 1.17072C14.9407 2.44711 15.736 4.67864 16.1609 7.42207C16.4773 7.33102 16.7886 7.22949 17.0939 7.11766ZM7.33412 7.26641C7.50092 7.32131 7.66929 7.37321 7.83905 7.42207C8.26398 4.67864 9.05934 2.44711 10.0589 1.17072C7.37862 1.64793 5.03423 3.09584 3.40224 5.13796C4.48835 6.04266 5.82734 6.77048 7.33412 7.26641ZM7.02148 8.21629C5.4308 7.69274 3.99599 6.92195 2.81287 5.94826C1.75288 7.55418 1.10267 9.4544 1.01116 11.5H7.50384C7.52024 10.4324 7.58896 9.40077 7.70333 8.42286C7.47376 8.35918 7.24638 8.29031 7.02148 8.21629Z" fill="currentColor"></path></svg>
 
 
-                                                        </td>
-            <td><?php echo $proveedor['nombreProveedor']; ?></td>
-            <td><?php echo $proveedor['razonSocial']; ?></td>
-            <td><?php echo $proveedor['rutProveedor']; ?></td>
-            <td>
-                <?php
-                    $contador = 0;
-                    foreach ($soportes as $soporte) {
-                        if ($proveedor['id_proveedor'] == $soporte['id_proveedor']) {
-                            $contador++;
-                        }
-                    }
-                    echo $contador;
-                ?>
-            </td>
-            <td>
-                <!-- Acciones -->
-                <a class="btn btn-primary micono" href="views/viewProveedor.php?id_proveedor=<?php echo $proveedor['id_proveedor']; ?>" data-toggle="tooltip" title="Ver Proveedor"><i class="fas fa-eye "></i></a>  
-                <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#actualizarProveedor" data-idproveedor="<?php echo $proveedor['id_proveedor']; ?>" onclick="loadProveedorData(this)"><i class="fas fa-pencil-alt"></i></button>
-                <a class="btn btn-danger micono" href="#" onclick="confirmarEliminacion(<?php echo htmlspecialchars($proveedor['id_proveedor']); ?>); return false;" data-toggle="tooltip" title="Eliminar Proveedor"><i class="fas fa-trash-alt "></i></a>
-            </td>
-        </tr>
-        <tr class="expandable-row" id="subtable-<?php echo $proveedor['id_proveedor']; ?>" style="display:none;">
-            <td colspan="8">
-                <!-- Subtabla --><div class="card-header milinea"><div class="titulox"><h4>Listado de Soportes</h4></div><div class="agregar"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarSoportessss"
-            data-rso='<?= (isset($proveedor['razonSocial'])) ? $proveedor['razonSocial'] : ''; ?>'
-            data-nfo='<?= (isset($proveedor['nombreFantasia'])) ? $proveedor['nombreFantasia'] : ''; ?>'
-            data-rpo='<?= (isset($proveedor['rutProveedor'])) ? $proveedor['rutProveedor'] : ''; ?>'
-            data-gpo='<?= (isset($proveedor['giroProveedor'])) ? $proveedor['giroProveedor'] : ''; ?>'
-            data-nro='<?= (isset($proveedor['nombreRepresentante'])) ? $proveedor['nombreRepresentante'] : ''; ?>'
-            data-rpoo='<?= (isset($proveedor['rutRepresentante'])) ? $proveedor['rutRepresentante'] : ''; ?>'
-            data-dfo='<?= (isset($proveedor['direccionFacturacion'])) ? $proveedor['direccionFacturacion'] : ''; ?>'
-            data-iro='<?= (isset($proveedor['id_region'])) ? $proveedor['id_region'] : ''; ?>'
-            data-ico='<?= (isset($proveedor['id_comuna'])) ? $proveedor['id_comuna'] : ''; ?>'
-            data-tco='<?= (isset($proveedor['telCelular'])) ? $proveedor['telCelular'] : ''; ?>'
-            data-tfo='<?= (isset($proveedor['telFijo'])) ? $proveedor['telFijo'] : ''; ?>'
-            data-elo='<?= (isset($proveedor['email'])) ? $proveedor['email'] : ''; ?>'
-            data-id='<?= (isset($proveedor['id_proveedor'])) ? $proveedor['id_proveedor'] : ''; ?>'>
-        <i class="fas fa-plus-circle"></i> Crear Soporte
-    </button>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarsoporteprov" data-id-proveedor="<?php echo $id_proveedor; ?>">
-    <i class="fas fa-plus-circle"></i> Agregar Soporte
-</button>                    </div>
-                       
+                                                        </td>                                            <td><?php echo $proveedor['nombreProveedor']; ?></td>
+                                            <td><?php echo $proveedor['razonSocial']; ?></td>
+                                            <td><?php echo $proveedor['rutProveedor']; ?></td>
+                                            <td>
+                                                <?php
+                                                $contador = 0;
+                                                foreach ($soportes as $soporte) {
+                                                    if ($proveedor['id_proveedor'] == $soporte['id_proveedor']) {
+                                                        $contador++;
+                                                    }
+                                                }
+                                                echo $contador;
+                                                ?>
+                                            </td>
+                                            <td>
+                                            <div class="alineado">
+       <label class="custom-switch sino" data-toggle="tooltip" 
+       title="<?php echo $proveedor['estado'] ? 'Desactivar Proveedor' : 'Activar Cliente'; ?>">
+    <input type="checkbox" 
+           class="custom-switch-input estado-switch2"
+           data-id="<?php echo $proveedor['id_proveedor']; ?>" data-tipo="proveedor" <?php echo $proveedor['estado'] ? 'checked' : ''; ?>>
+    <span class="custom-switch-indicator"></span>
+</label>
+    </div>
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-primary micono" href="views/viewProveedor.php?id_proveedor=<?php echo $proveedor['id_proveedor']; ?>" data-toggle="tooltip" title="Ver Proveedor"><i class="fas fa-eye "></i></a> 
+                                                <a class="btn btn-success micono"  data-bs-toggle="modal" data-bs-target="#actualizarProveedor" data-idproveedor="<?php echo $proveedor['id_proveedor']; ?>" onclick="loadProveedorData(this)" ><i class="fas fa-pencil-alt"></i></a>
+                                            </td>
+                                        </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-                   
-            </td>
-        </tr>
-        <?php endforeach; ?>
-    </tbody>
-</table>
                 </div>
+            </div>
+        </div>
+    </section>
+</div>
+
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Verifica si la tabla ya está inicializada
-    var table = $.fn.DataTable.isDataTable('#tableExportadora') ?
-        $('#tableExportadora').DataTable() :
-        $('#tableExportadora').DataTable({
-            // Opciones de configuración si es necesario
+    var table;
+
+    // Comprueba si la tabla ya está inicializada como DataTable
+    if ($.fn.DataTable.isDataTable('#tableExportadora')) {
+        table = $('#tableExportadora').DataTable();
+    } else {
+        // Si no está inicializada, inicialízala
+        table = $('#tableExportadora').DataTable({
+            // Aquí puedes añadir opciones de configuración si es necesario
         });
+    }
 
     $('#tableExportadora').on('click', 'tr.proveedor-row .expand-icon', function(e) {
         e.stopPropagation(); // Previene la propagación del evento
@@ -183,14 +179,8 @@ document.addEventListener('DOMContentLoaded', function() {
         var row = table.row(tr);
         var proveedorId = tr.data('proveedor-id');
 
-        console.log("Icon clicked:", icon);
-        console.log("Table row:", tr);
-        console.log("Row data:", row);
-        console.log("Proveedor ID:", proveedorId);
-
         if (row.child.isShown()) {
             // Cerrar esta fila
-            console.log("Closing row:", tr);
             icon.removeClass('fa-angle-down').addClass('fa-angle-right');
             row.child().find('.child-row').slideUp(300, function() {
                 row.child.hide();
@@ -210,7 +200,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             // Abrir esta fila
-            console.log("Opening row:", tr);
             icon.removeClass('fa-angle-right').addClass('fa-angle-down');
             if (row.child() && row.child().length) {
                 // Si el contenido hijo ya existe, solo mostrarlo
@@ -221,106 +210,115 @@ document.addEventListener('DOMContentLoaded', function() {
             } else {
                 // Si el contenido hijo no existe, cargarlo
                 $.ajax({
-                    url: 'get_soportes.php',
-                    method: 'GET',
-                    data: { proveedor_id: proveedorId },
-                    success: function(response) {
-                        console.log("AJAX success response:", response);
-                        var soportes = JSON.parse(response);
-                        console.log("Parsed soportes:", soportes);
-                        var childContent = $('<div class="child-row" >' + formatSoportes(soportes, { id_proveedor: proveedorId }) + '</div>');
-                        row.child(childContent).show();
-                        childContent.slideDown(300, function() {
-                            tr.addClass('shown');
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        console.error("Error al obtener soportes:", error);
-                    }
-                });
+    url: 'get_soportes.php',
+    method: 'GET',
+    data: { proveedor_id: proveedorId },
+    success: function(response) {
+        var soportes = JSON.parse(response);
+        console.log(response,"reeess");
+        // Pasar los datos del proveedor al llamar a formatSoportes
+        var proveedor = {
+            razonSocial: tr.data('razon-social'),
+            nombreFantasia: tr.data('nombre-fantasia'),
+            rutProveedor: tr.data('rut-proveedor'),
+            giroProveedor: tr.data('giro-proveedor'),
+            nombreRepresentante: tr.data('nombre-representante'),
+            rutRepresentante: tr.data('rut-representante'),
+            direccionFacturacion: tr.data('direccion-facturacion'),
+            id_region: tr.data('id-region'),
+            id_comuna: tr.data('id-comuna'),
+            telCelular: tr.data('tel-celular'),
+            telFijo: tr.data('tel-fijo'),
+            email: tr.data('email'),
+            id_proveedor: proveedorId
+        };
+
+        var childContent = $('<div class="child-row" style="display: none;">' + formatSoportes(soportes, proveedor) + '</div>');
+        row.child(childContent).show();
+        childContent.slideDown(300, function() {
+            tr.addClass('shown');
+        });
+    },
+    error: function(xhr, status, error) {
+        console.error("Error al obtener soportes:", error);
+    }
+});
             }
         }
+    });});
+
+    // Función para formatear los soportes
+    function formatSoportes(soportes, proveedor) {
+    let html = `
+        <div class="card-header milinea">
+            <div class="titulox"><h4>Listado de Soportes</h4></div>
+            <div class="agregar">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarSoportessss"
+                    data-rso="${proveedor.razonSocial}" data-nfo="${proveedor.nombreFantasia}" data-rpo="${proveedor.rutProveedor}" data-gpo="${proveedor.giroProveedor}"
+                    data-nro="${proveedor.nombreRepresentante}" data-rpoo="${proveedor.rutRepresentante}" data-dfo="${proveedor.direccionFacturacion}"
+                    data-iro="${proveedor.id_region}" data-ico="${proveedor.id_comuna}" data-tco="${proveedor.telCelular}" data-tfo="${proveedor.telFijo}" 
+                    data-elo="${proveedor.email}" data-id="${proveedor.id_proveedor}">
+                    <i class="fas fa-plus-circle"></i> Crear Soporte
+                </button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarsoporteprov"
+                    data-id-proveedor="${proveedor.id_proveedor}">
+                    <i class="fas fa-plus-circle"></i> Agregar Soporte
+                </button>
+            </div>
+        </div>
+        <table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;" class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre Soporte</th>
+                    <th>Razón Social</th>
+                    <th>Rut</th>
+                    <th>Medios</th>
+                    <th>Teléfono</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+    `;
+
+    soportes.forEach(soporte => {
+        const {
+            id_soporte = '', nombreIdentficiador = '', razonSocial = '', rut_soporte = '', telFijo = '', medios = []
+        } = soporte;
+
+        // Crear una lista de nombres de medios
+        let mediosNombres = Array.isArray(medios) ? medios.join(', ') : '';
+        let tooltipContent2 = `${mediosNombres}`;
+
+        html += `
+            <tr>
+                <td>${id_soporte}</td>
+                <td>${nombreIdentficiador}</td>
+                <td>${razonSocial}</td>
+                <td>${rut_soporte}</td>
+                <td style="word-wrap: break-word; position:relative;"> <svg style="margin-right:5px;" width="24" data-bs-toggle="tooltip" data-bs-html="true" title="${tooltipContent2}" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="dist_marketing-btn-icon__AWP8I"><path fill-rule="evenodd" clip-rule="evenodd" d="M24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24C18.6274 24 24 18.6274 24 12ZM13.0033 22.3936C12.574 22.8778 12.2326 23 12 23C11.7674 23 11.426 22.8778 10.9967 22.3936C10.5683 21.9105 10.1369 21.1543 9.75435 20.1342C9.3566 19.0735 9.03245 17.7835 8.81337 16.3341C9.8819 16.1055 10.9934 15.9922 12.1138 16.0004C13.1578 16.0081 14.1912 16.1211 15.1866 16.3341C14.9675 17.7835 14.6434 19.0735 14.2457 20.1342C13.8631 21.1543 13.4317 21.9105 13.0033 22.3936ZM15.3174 15.3396C14.2782 15.1229 13.2039 15.0084 12.1211 15.0004C10.9572 14.9919 9.7999 15.1066 8.68263 15.3396C8.58137 14.4389 8.51961 13.4874 8.50396 12.5H15.496C15.4804 13.4875 15.4186 14.4389 15.3174 15.3396ZM16.1609 16.5779C15.736 19.3214 14.9407 21.5529 13.9411 22.8293C16.6214 22.3521 18.9658 20.9042 20.5978 18.862C19.6345 18.0597 18.4693 17.3939 17.1586 16.9062C16.8326 16.7849 16.4997 16.6754 16.1609 16.5779ZM21.1871 18.0517C20.1389 17.1891 18.8906 16.4837 17.5074 15.969C17.1122 15.822 16.708 15.6912 16.2967 15.5771C16.411 14.5992 16.4798 13.5676 16.4962 12.5H22.9888C22.8973 14.5456 22.2471 16.4458 21.1871 18.0517ZM7.70333 15.5771C7.58896 14.5992 7.52024 13.5676 7.50384 12.5H1.01116C1.10267 14.5456 1.75288 16.4458 2.81287 18.0517C3.91698 17.1431 5.24216 16.4096 6.71159 15.8895C7.0368 15.7744 7.3677 15.6702 7.70333 15.5771ZM3.40224 18.862C5.03424 20.9042 7.37862 22.3521 10.0589 22.8293C9.05934 21.5529 8.26398 19.3214 7.83906 16.5779C7.57069 16.6552 7.3059 16.74 7.04526 16.8322C5.65305 17.325 4.41634 18.0173 3.40224 18.862ZM15.496 11.5H8.50396C8.51961 10.5126 8.58136 9.56113 8.68263 8.66039C9.84251 8.90232 11.0448 9.01653 12.2521 8.99807C13.2906 8.9822 14.3202 8.86837 15.3174 8.66039C15.4186 9.56113 15.4804 10.5126 15.496 11.5ZM9.75435 3.86584C9.3566 4.9265 9.03245 6.21653 8.81337 7.66594C9.92191 7.90306 11.0758 8.01594 12.2369 7.99819C13.2391 7.98287 14.2304 7.87047 15.1866 7.66594C14.9675 6.21653 14.6434 4.9265 14.2457 3.86584C13.8631 2.84566 13.4317 2.08954 13.0033 1.60643C12.574 1.12215 12.2326 1 12 1C11.7674 1 11.426 1.12215 10.9967 1.60643C10.5683 2.08954 10.1369 2.84566 9.75435 3.86584ZM16.4962 11.5C16.4798 10.4324 16.411 9.40077 16.2967 8.42286C16.6839 8.31543 17.0648 8.19328 17.4378 8.05666C18.848 7.54016 20.1208 6.82586 21.1871 5.94826C22.2471 7.55418 22.8973 9.4544 22.9888 11.5H16.4962ZM17.0939 7.11766C18.4298 6.62836 19.6178 5.95419 20.5978 5.13796C18.9658 3.09584 16.6214 1.64793 13.9411 1.17072C14.9407 2.44711 15.736 4.67864 16.1609 7.42207C16.4773 7.33102 16.7886 7.22949 17.0939 7.11766ZM7.33412 7.26641C7.50092 7.32131 7.66929 7.37321 7.83905 7.42207C8.26398 4.67864 9.05934 2.44711 10.0589 1.17072C7.37862 1.64793 5.03423 3.09584 3.40224 5.13796C4.48835 6.04266 5.82734 6.77048 7.33412 7.26641ZM7.02148 8.21629C5.4308 7.69274 3.99599 6.92195 2.81287 5.94826C1.75288 7.55418 1.10267 9.4544 1.01116 11.5H7.50384C7.52024 10.4324 7.58896 9.40077 7.70333 8.42286C7.47376 8.35918 7.24638 8.29031 7.02148 8.21629Z" fill="currentColor"></path></svg> <span> ${tooltipContent2}</span>
+</td>
+                <td>${telFijo}</td>
+                <td>
+                    <a class="btn btn-primary micono" href="views/viewSoporte.php?id_soporte=${id_soporte}" data-toggle="tooltip" title="Ver Soporte"><i class="fas fa-eye "></i></a>
+                    <a class="btn btn-success micono"  data-bs-toggle="modal" data-bs-target="#actualizarSoporte" data-id-soporte="${id_soporte}" data-idproveedor="${proveedor.id_proveedor}" onclick="loadProveedorDataSoporte(this)"><i class="fas fa-pencil-alt"></i></a>
+
+                </td>
+            </tr>
+        `;
     });
-});
 
-function formatSoportes(soportes, proveedor) {
-    var html = '';
+    html += `
+            </tbody>
+        </table>
+    `;
 
-    // HTML para los botones y encabezado
-    html += '<div class="card-header milinea">';
-    html += '<div class="titulox"><h4>Listado de Soportes</h4></div>';
-    html += '<div class="agregar">';
-    html += '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarSoportessss"';
-    html += ' data-rso="' + (proveedor.razonSocial || '') + '" data-nfo="' + (proveedor.nombreFantasia || '') + '"';
-    html += ' data-rpo="' + (proveedor.rutProveedor || '') + '" data-gpo="' + (proveedor.giroProveedor || '') + '"';
-    html += ' data-nro="' + (proveedor.nombreRepresentante || '') + '" data-rpoo="' + (proveedor.rutRepresentante || '') + '"';
-    html += ' data-dfo="' + (proveedor.direccionFacturacion || '') + '" data-iro="' + (proveedor.id_region || '') + '"';
-    html += ' data-ico="' + (proveedor.id_comuna || '') + '" data-tco="' + (proveedor.telCelular || '') + '"';
-    html += ' data-tfo="' + (proveedor.telFijo || '') + '" data-elo="' + (proveedor.email || '') + '"';
-    html += ' data-id="' + (proveedor.id_proveedor || '') + '"><i class="fas fa-plus-circle"></i> Crear Soporte</button>';
-    html += '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarsoporteprov"';
-    html += ' data-id-proveedor="' + (proveedor.id_proveedor || '') + '"><i class="fas fa-plus-circle"></i> Agregar Soporte</button>';
-    html += '</div></div>';
-
-    // HTML para la tabla
-    html += '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;" class="table">';
-    html += '<thead><tr><th>ID</th><th>Nombre Soporte</th><th>Razón Social</th><th>Rut</th><th>Medio</th><th>Teléfono</th><th>Acciones</th></tr></thead>';
-    html += '<tbody>';
-
-    // Crear filas de la tabla
-    for (var i = 0; i < soportes.length; i++) {
-        html += '<tr>';
-        html += '<td>' + (soportes[i].id || '') + '</td>';
-        html += '<td>' + (soportes[i].nombre_soporte || '') + '</td>';
-        html += '<td>' + (soportes[i].razon_social || '') + '</td>';
-        html += '<td>' + (soportes[i].rut || '') + '</td>';
-        html += '<td><svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="dist_marketing-btn-icon__AWP8I">';
-        html += '<path fill-rule="evenodd" clip-rule="evenodd" fill="currentColor"></path></svg></td>';
-        html += '<td>' + (soportes[i].telefono || '') + '</td>';
-        html += '<td>';
-        html += '<a class="btn btn-primary micono" href="views/viewSoporte.php?id_soporte=' + (soportes[i].id || '') + '" data-toggle="tooltip" title="Ver Soporte"><i class="fas fa-eye "></i></a> ';
-        html += '<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#actualizarSoporte"';
-        html += ' data-id-soporte="' + (soportes[i].id || '') + '" data-idproveedor="' + (proveedor.id_proveedor || '') + '" onclick="loadProveedorDataSoporte(this)">';
-        html += '<i class="fas fa-pencil-alt"></i></button>';
-        html += '<a class="btn btn-danger micono" href="#" onclick="confirmarEliminacionSoporte(' + (soportes[i].id || '') + '); return false;" data-toggle="tooltip" title="Eliminar Soporte"><i class="fas fa-trash-alt "></i></a>';
-        html += '</td>';
-        html += '</tr>';
-    }
-
-    html += '</tbody></table>';
-
-    // Devolver el HTML generado
-    console.log("Generated HTML for soportes:", html);
     return html;
+    $('[data-bs-toggle="tooltip"]').tooltip();
 }
 
 
-    // Función para obtener los nombres de medios asociados a un soporte
-    function getMediosNombres(soporteId) {
-        return $.ajax({
-            url: 'https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/soporte_medios?select=*&id_soporte=eq.' + soporteId,
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc"
-            }
-        }).then(function(medios_response) {
-            var medios_nombres = [];
-            for (var j = 0; j < medios_response.length; j++) {
-                var medio = medios.find(function(m) { return m.id === medios_response[j].id_medio; });
-                if (medio) {
-                    medios_nombres.push(medio.NombredelMedio);
-                }
-            }
-            return medios_nombres;
-        });
-    }
-
-    // Función para formatear los soportes y medios asociados
-    
 </script>
-
 //Modal Edit Proveedor
 <div class="modal fade" id="actualizarProveedor" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true">
           <div class="modal-dialog modal-lg" role="document">
@@ -520,11 +518,7 @@ function formatSoportes(soportes, proveedor) {
             </div>
           </div>
         </div>
-
-
-
-
-        
+// MODAL ACTUALIZAR SOPORTE
 <div class="modal fade" id="actualizarSoporte" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -717,8 +711,15 @@ function formatSoportes(soportes, proveedor) {
     </div>
 </div>
 
+//fin editar modal
 
 
+
+//fin editar modal
+
+
+
+//Agregar Proveedor
 <div class="modal fade" id="agregarProveedor" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -915,7 +916,9 @@ function formatSoportes(soportes, proveedor) {
     </div>
 </div>
 
+//fin editar modal
 
+//Modal agregar soporte
 <div class="modal fade" id="agregarsoporteprov" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -1057,7 +1060,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="modal-body">
                 <form id="formualarioSoporte">
                     <!-- Campo oculto para el ID -->
-                    <input type="hidden"  name="id_proveedor" id="id_proveedor">
+                    <input   name="id_proveedor" id="id_proveedor">
                     <!-- Campos del formulario -->
                     <h3 class="titulo-registro mb-3">Agregar Soporte</h3>
                     <div class="row">
@@ -1380,11 +1383,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const button = event.relatedTarget;
 
         // Asignar el ID del proveedor al input oculto en el modal
-        const idProveedor = button.getAttribute('data-id');
-        const idInput = modal.querySelector('#id_proveedor');
-        idInput.value = idProveedor;
-
+    
         // Asignar los valores de los atributos data-* a los inputs ocultos en el modal
+        modal.querySelector('input[name="id_proveedor"]').value = button.getAttribute('data-id');
         modal.querySelector('input[name="razonsoculto"]').value = button.getAttribute('data-rso');
         modal.querySelector('input[name="nombref"]').value = button.getAttribute('data-nfo');
         modal.querySelector('input[name="rutt"]').value = button.getAttribute('data-rpo');
@@ -1596,7 +1597,7 @@ function confirmarEliminacionSoporte(id) {
 
 
 
-
+<script src="assets/js/toggleProveedor.js"></script>
 
 <?php include 'componentes/settings.php'; ?>
 <?php include 'componentes/footer.php'; ?>

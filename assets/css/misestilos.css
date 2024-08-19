@@ -1,7 +1,18 @@
 .foulou{ font-size: 14px !important; }
+.clasmedios{font-size:10px;}
 .opeo{     margin-top: -13px; padding: 12px 18px; margin-bottom: 13px; margin-left: 20px;}
 .loiloi{background:#f04d37; border-radius:7px;}
-
+.bunbun:hover .toltipcreado{display:block !important;}
+.toltipcreado{display:none; background: #000;
+  position: absolute;
+  bottom: 43px;
+  padding-right: 20px;
+  padding-top: 5px;
+  border-radius: 6px;
+  color: white;
+  font-family: 'Nunito';
+  right: 58px;
+  font-size: 10px;}
 .labelforms{margin-top:20px;}
 .titulo-registro{font-size:15px;}
 .selected-options {

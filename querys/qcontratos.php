@@ -1,74 +1,27 @@
 <?php
-    if(isset($data['results']) && is_array($data['results'])){
-        foreach($data['results'] as $contrato){
-          $id = htmlspecialchars($contrato['id']);
-          $nombreContrato = htmlspecialchars($contrato['field_5217'] ?? 'N/A');
-          $nombreCliente = "N/A";
-        if(isset($contrato['field_5220']) && is_array($contrato['field_5220'])) {
-        foreach($contrato['field_5220'] as $item) {
-          if(isset($item['value'])) {
-            $nombreCliente = htmlspecialchars($item['value']);
-            break; // Salir del bucle una vez que se encuentra el valor
-          }
-        }
-      }
-      $nombreProducto = "N/A";
-      if(isset($contrato['field_5222']) && is_array($contrato['field_5222'])) {
-        foreach($contrato['field_5222'] as $item) {
-          if(isset($item['value'])) {
-            $nombreProducto = htmlspecialchars($item['value']);
-            break; // Salir del bucle una vez que se encuentra el valor
-          }
-        }
-      }
-      $nombreProveedor = "N/A";
-      if(isset($contrato['field_5224']) && is_array($contrato['field_5224'])) {
-        foreach($contrato['field_5224'] as $item) {
-          if(isset($item['value'])) {
-            $nombreProveedor = htmlspecialchars($item['value']);
-            break; // Salir del bucle una vez que se encuentra el valor
-          }
-        }
-      }
-      $medios = "N/A";
-      if(isset($contrato['field_5226']) && is_array($contrato['field_5226'])) {
-        foreach($contrato['field_5226'] as $item) {
-          if(isset($item['value'])) {
-            $medios = htmlspecialchars($item['value']);
-            break; // Salir del bucle una vez que se encuentra el valor
-          }
-        }
-      }
-      $formaPago = "N/A";
-      if(isset($contrato['field_5246']) && is_array($contrato['field_5246'])) {
-        foreach($contrato['field_5246'] as $item) {
-          if(isset($item['value'])) {
-            $formaPago = htmlspecialchars($item['value']);
-            break; // Salir del bucle una vez que se encuentra el valor
-          }
-        }
-      }
-          
-    ?>
-   <tr>
-    <td>
-    <?php echo "$id";?>
-    </td>
-    <td><?php echo "$nombreContrato";?></td>
-    <td><?php echo "$nombreCliente";?></td>
-    <td><?php echo "$nombreProducto";?></td>
-    <td><?php echo "$nombreProveedor";?></td>
-    <td><?php echo "$medios";?></td>
-    <td><?php echo "$formaPago";?></td>
-  
-    <td><a href="#" class="btn btn-primary">Detail</a></td>
-</tr>
-    <?php
-        }
-    } else {
-        echo "<tr><td colspan='9'>No se encontraron clientes</td></tr>";
+    function makeRequest($url) {
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => $url,
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'apikey: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+                'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc'
+            ),
+        ));
+        $response = curl_exec($curl);
+        curl_close($curl);
+        return json_decode($response, true);
     }
+
+// Obtener datos+
+$contratos = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Contratos?select=*');
+
+
     ?>
-
-
-

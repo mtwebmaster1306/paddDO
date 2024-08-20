@@ -11,6 +11,9 @@ $idProveedor = isset($_GET['id_proveedor']) ? $_GET['id_proveedor'] : null;
 if (!$idProveedor) {
     die("No se proporcionó un ID de cliente válido.");
 }
+$contactosFiltrados = array_filter($contactos, function($contacto) use ($idProveedor) {
+  return $contacto['id_proveedor'] == $idProveedor;
+});
 
 // Obtener datos del cliente específico
 $url = "https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Proveedores?id_proveedor=eq.$idProveedor&select=*";
@@ -260,16 +263,65 @@ include '../componentes/sidebar.php';
                       </div>
 
                       <div class="tab-pane fade" id="contactos" role="tabpanel" aria-labelledby="profile-tab3">
-                      <div class="row">
-                      <div class="col-md-4 col-6 b-r">
-                            <strong>Nombre de Contacto</strong>
-                            <br>
-                            <p class="text-muted"><?php echo $datosProveedor['nombreContacto'] ; ?></p>
-                          </div>
-                          <div class="col-md-4 col-6 b-r">
-                            <strong>Correo de Contacto</strong>
-                            <br>
-                            <p class="text-muted"><?php echo $datosProveedor['emailContacto'] ; ?></p>
+                                    <div class="card-header milinea">
+                                        <div class="titulox am">Listado de Contactos</div>
+                                        <div class="agregar">
+                                            <a href="#" class="btn btn-primary open-modal" data-bs-toggle="modal"
+                                                data-bs-target="#contactoProveedor">
+                                                <i class="fas fa-plus-circle"></i> Agregar Comisión
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <table class="table table-bordered text-center">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Apellidos</th>
+            <th>Teléfono</th>
+            <th>Email</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php if (!empty($contactosFiltrados) && isset($contactosFiltrados[0])): ?>
+        <?php foreach ($contactosFiltrados as $contacto): ?>
+        <tr>
+            <td><?php echo htmlspecialchars($contacto['id_contacto'] ?? 'No disponible'); ?></td>
+            <td><?php echo htmlspecialchars($contacto['nombres'] ?? 'No disponible'); ?></td>
+            <td><?php echo htmlspecialchars($contacto['apellidos'] ?? 'No disponible'); ?></td>
+            <td><?php echo htmlspecialchars($contacto['telefono'] ?? 'No disponible'); ?></td>
+            <td><?php echo htmlspecialchars($contacto['email'] ?? 'No disponible'); ?></td>
+            <td>
+              <input type="hidden" data-idproveedor="<?php echo $idProveedor ?>" value="<?php echo $idProveedor ?>">
+                <input type="hidden" class="id_contacto" value="<?php echo htmlspecialchars($contacto['id_contacto'] ?? 'No disponible'); ?>">
+                <button type="button" class="btn btn-success micono" 
+        data-bs-toggle="modal" 
+        data-bs-target="#actualizarContactoModal"
+        data-idcontacto="<?php echo htmlspecialchars($contacto['id_contacto']); ?>" 
+        data-nombre="<?php echo htmlspecialchars($contacto['nombres']); ?>"
+        data-apellido="<?php echo htmlspecialchars($contacto['apellidos']); ?>"
+        data-telefono="<?php echo htmlspecialchars($contacto['telefono']); ?>"
+        data-email="<?php echo htmlspecialchars($contacto['email']); ?>"
+        data-toggle="tooltip" 
+        title="Editar">
+    <i class="fas fa-pencil-alt"></i>
+</button>
+                <button type="button" class="btn btn-danger micono eliminar-contacto"
+                        data-idcontacto="<?php echo htmlspecialchars($contacto['id_contacto'] ?? ''); ?>"
+                        data-toggle="tooltip" title="Eliminar">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+        <?php else: ?>
+        <tr>
+            <td colspan="6">No hay datos disponibles</td>
+        </tr>
+        <?php endif; ?>
+    </tbody>
+</table>
                       </div>
 
                       <div class="tab-pane fade" id="soportes" role="tabpanel" aria-labelledby="profile-tab4">
@@ -425,5 +477,346 @@ include '../componentes/sidebar.php';
           
         </div>
       </div>
+      <div class="modal fade" id="contactoProveedor" tabindex="-1" role="dialog" aria-labelledby="formModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="formModal">AGREGAR CONTACTO</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Alerta para mostrar el resultado de la actualización -->
+                <div id="updateAlert" class="alert" style="display:none;" role="alert"></div>
+
+
+                <form id="contactoagregar">
+                    <input type="hidden" name="id_proveedor" value="<?php echo $idProveedor; ?>">
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-money-bill-alt"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="nombre" name="nombre">
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="apellido">Apellido</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-money-bill-alt"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="apellido" name="apellido">
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono">Teléfono</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-money-bill-alt"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="telefono" name="telefono">
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-money-bill-alt"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="email" name="email">
+
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar Contacto</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+      <div class="modal fade" id="actualizarContactoModal" tabindex="-1" role="dialog" aria-labelledby="actualizarContactoModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="actualizarContactoModal">ACTUALIZAR CONTACTO</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="actualizarcontactop">
+                    <input type="hidden" name="id_proveedor" value="<?php echo $idProveedor; ?>">
+                    <input type="hidden" id="id_contacto" name="id_contacto">
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="nombre" name="nombre">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="apellido">Apellido</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="apellido" name="apellido">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono">Teléfono</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-phone"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="telefono" name="telefono">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            </div>
+                            <input type="text" class="form-control" id="email" name="email">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar Contacto</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<script>document.addEventListener('DOMContentLoaded', function () {
+    var actualizarContactoModal = document.getElementById('actualizarContactoModal');
+
+    actualizarContactoModal.addEventListener('show.bs.modal', function (event) {
+        // Extrae el botón que activó el modal
+        var button = event.relatedTarget;
+        
+        // Extrae los datos del contacto del atributo data-* del botón
+        var idContacto = button.getAttribute('data-idcontacto');
+        var nombre = button.getAttribute('data-nombre');
+        var apellido = button.getAttribute('data-apellido');
+        var telefono = button.getAttribute('data-telefono');
+        var email = button.getAttribute('data-email');
+        
+        // Llena el formulario del modal con los datos del contacto
+        var modal = document.querySelector('#actualizarcontactop');
+        modal.querySelector('#id_contacto').value = idContacto;
+        modal.querySelector('#nombre').value = nombre;
+        modal.querySelector('#apellido').value = apellido;
+        modal.querySelector('#telefono').value = telefono;
+        modal.querySelector('#email').value = email;
+    });
+});</script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('ID del cliente:', <?php echo json_encode($idProveedor); ?>);
+
+    const form = document.getElementById('contactoagregar');
+    const submitButton = form.querySelector('button[type="submit"]');
+    let isSubmitting = false;
+
+    // Asegúrate de reemplazar esto con tu clave API real de Supabase
+    const SUPABASE_API_KEY =
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc';
+
+    form.addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        if (isSubmitting) {
+            console.log('Envío ya en progreso, ignorando este envío.');
+            return;
+        }
+
+        isSubmitting = true;
+        submitButton.disabled = true;
+
+        const formData = new FormData(this);
+        const data = {
+            id_proveedor: parseInt(formData.get('id_proveedor')),
+            nombres: formData.get('nombre'),
+            apellidos: formData.get('apellido'),
+            telefono: formData.get('telefono'),
+            email: formData.get('email')
+        };
+
+        console.log('Datos del formulario:', data);
+
+        try {
+            document.body.classList.add('loaded');
+
+            const response = await fetch(
+                'https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/contactos', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'apikey': SUPABASE_API_KEY,
+                        'Authorization': `Bearer ${SUPABASE_API_KEY}`,
+                        'Prefer': 'return=minimal'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+            }
+
+            $('#contactoProveedor').modal('hide');
+            await Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: 'Comisión guardada exitosamente',
+                showConfirmButton: false,
+                timer: 1500
+            });
+            location.reload();
+            
+        } catch (error) {
+            console.error('Error en la solicitud:', error);
+            await Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'Error al guardar la comisión: ' + error.message
+            });
+        } finally {
+            document.body.classList.remove('loaded');
+            isSubmitting = false;
+            submitButton.disabled = false;
+        }
+    });
+
+    
+async function actualizarContacto(event) {
+    event.preventDefault(); // Evita que el formulario se envíe de la manera tradicional
+
+    const formData = new FormData(event.target); // Obtiene los datos del formulario
+    const id = formData.get('id_contacto'); // Obtiene el ID del contacto desde el formulario
+
+    // Prepara los datos que se enviarán a la API
+    const data = {
+        id_proveedor: parseInt(formData.get('id_proveedor')), // Asegúrate de que el nombre de campo coincida con el del formulario
+        nombres: formData.get('nombre'), // Asegúrate de que el nombre del campo coincida con el del formulario
+        apellidos: formData.get('apellido'), // Asegúrate de que el nombre del campo coincida con el del formulario
+        telefono: formData.get('telefono'), // Asegúrate de que el nombre del campo coincida con el del formulario
+        email: formData.get('email') // Asegúrate de que el nombre del campo coincida con el del formulario
+    };
+console.log(data,"acutalizarrr");
+    try {
+        const response = await fetch(`https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/contactos?id_contacto=eq.${id}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'apikey': SUPABASE_API_KEY,
+                'Authorization': `Bearer ${SUPABASE_API_KEY}`,
+                'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify(data) // Convierte los datos a formato JSON
+        });
+
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        // Funciones para mostrar éxito y ocultar el modal
+        
+       
+        mostrarExito('Contacto actualizado correctamente');
+        location.reload(); // Reemplaza esto con tu función para actualizar la tabla de contactos
+
+    } catch (error) {
+        console.error('Error al actualizar el contacto:', error);
+        mostrarError('No se pudo actualizar el contacto: ' + error.message);
+    }
+}
+async function eliminarContacto(id) {
+    if (!await confirmarEliminar()) return; // Confirmar la eliminación con el usuario
+
+    try {
+        // Realiza la solicitud DELETE a la API de contactos
+        const response = await fetch(`https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/contactos?id_contacto=eq.${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json', // Asegúrate de incluir el tipo de contenido JSON
+                'apikey': SUPABASE_API_KEY,
+                'Authorization': `Bearer ${SUPABASE_API_KEY}`
+            }
+        });
+
+        // Verifica si la respuesta fue exitosa
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        // Mostrar mensaje de éxito y actualizar la lista de contactos
+        mostrarExito('El contacto ha sido eliminado.');
+        await cargarYMostrarContactos(); // Asegúrate de tener esta función para actualizar la vista
+
+    } catch (error) {
+        console.error('Error al eliminar el contacto:', error);
+        mostrarError('No se pudo eliminar el contacto: ' + error.message);
+    }
+}
+
+async function confirmarEliminar() {
+        const result = await Swal.fire({
+            title: '¿Estás seguro?',
+            text: "No podrás revertir esta acción!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Sí, eliminar!',
+            cancelButtonText: 'Cancelar'
+        });
+        return result.isConfirmed;
+    }
+
+
+function mostrarExito(mensaje) {
+    Swal.fire({
+        icon: 'success',
+        title: 'Éxito',
+        text: mensaje,
+        showConfirmButton: false,
+        timer: 1500
+    });
+}
+
+document.querySelectorAll('.eliminar-contacto').forEach(button => {
+        button.addEventListener('click', async function() {
+            // Obtiene el ID del contacto del atributo data-idcontacto
+            const idContacto = this.getAttribute('data-idcontacto');
+
+            // Llama a la función de eliminar contacto con el ID obtenido
+            await eliminarContacto(idContacto);
+        });
+    });
+
+
+
+    document.getElementById('actualizarcontactop').addEventListener('submit', actualizarContacto);
+  
+});
+
+
+
+
+
+
+</script>
 <?php include '../componentes/settings.php'; ?>
 <?php include '../componentes/footer.php'; ?>

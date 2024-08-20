@@ -122,7 +122,8 @@ async function submitForm2(event) {
             });
 
             if (responseProveedorMedios.ok) {
-                alert("Registro correcto");
+                mostrarExito('Comisión agregada correctamente');
+
                 location.reload();
             } else {
                 const errorData = await responseProveedorMedios.text(); // Obtener respuesta como texto
@@ -139,6 +140,27 @@ async function submitForm2(event) {
         alert("Error en la solicitud, intente nuevamente");
     }
 }
+function mostrarExito(mensaje) {
+    Swal.fire({
+        icon: 'success',
+        title: 'Éxito',
+        text: mensaje,
+        showConfirmButton: false,
+        timer: 1500
+    });
+}
+
+
+function agregarEventListeners() {
+    document.querySelectorAll('.editar-comision').forEach(btn => {
+        btn.onclick = (e) => cargarDatosComision(e.currentTarget.dataset.id);
+    });
+    document.querySelectorAll('.eliminar-comision').forEach(btn => {
+        btn.onclick = (e) => eliminarComision(e.currentTarget.dataset.id);
+    });
+}
+
+
 
 // Asigna el evento de envío al formulario de agregar proveedor
 document.getElementById('formularioAgregarProveedor').addEventListener('submit', submitForm2);

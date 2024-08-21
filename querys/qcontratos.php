@@ -22,6 +22,50 @@
 
 // Obtener datos+
 $contratos = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Contratos?select=*');
+$clientes = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Clientes?select=*');
+$productos = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Productos?select=*');
+$proveedores= makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Proveedores?select=*');
+$medios = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Medios?select=*');
+$pagos = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/FormaDePago?select=*');
+$tipoP = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/TipoDePublicidad?select=*');
+$anios = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Anios?select=*');
+$meses = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Meses?select=*');
 
+$contratosMap = [];
+foreach ($contratos as $contrato) {
+    $contratosMap[$contrato['id']] = $contrato;
+}
+$clientesMap = [];
+foreach ($clientes as $cliente) {
+    $clientesMap[$cliente['id_cliente']] = $cliente;
+}
 
-    ?>
+$productosMap = [];
+foreach ($productos as $producto) {
+    $productosMap[$producto['Id_Cliente']][] = $producto;
+}
+$proveedorMap = [];
+foreach ($proveedores as $proveedor) {
+    $proveedorMap[$proveedor['id_proveedor']] = $proveedor;
+}
+$mediosMap = [];
+foreach ($medios as $medio) {
+    $mediosMap[$medio['id']] = $medio;
+}
+$pagosMap = [];
+foreach ($pagos as $pago) {
+    $pagosMap[$pago['id']] = $pago;
+}
+$tipoPMap = [];
+foreach ($tipoP as $tipo) {
+    $tipoPMap[$tipo['id_Tipo_Publicidad']] = $tipo;
+}
+$aniosMap = [];
+foreach ($anios as $anio) {
+    $aniosMap[$anio['id']] = $anio;
+}
+$mesesMap = [];
+foreach ($meses as $mes) {
+    $mesesMap[$mes['id']] = $mes;
+}
+?>

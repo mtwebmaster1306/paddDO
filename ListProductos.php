@@ -30,8 +30,9 @@ include 'componentes/sidebar.php';
                   <thead>
                     <tr>
                       <th>ID</th>
-                      <th>Nombre Cliente</th>
-                      <th>Nombre de Producto</th>
+                      <th>Cliente</th>
+                      <th>Nombre del Producto</th>
+                      <th>Estado</th>
                       <th>Acciones</th>
                     </tr>
                   </thead>
@@ -41,11 +42,18 @@ include 'componentes/sidebar.php';
                         <td><?php echo $producto['id']; ?></td>
                         <td><?php echo $clientesMap[$producto['Id_Cliente']]['nombreCliente'] ?? ''; ?></td>
                         <td><?php echo $producto['NombreDelProducto']; ?></td>
-
+                        <td><div class="alineado">
+       <label class="custom-switch sino" data-toggle="tooltip" 
+       title="<?php echo $producto['Estado'] ? 'Desactivar Producto' : 'Activar Producto'; ?>">
+    <input type="checkbox" 
+           class="custom-switch-input estado-switchP"
+           data-id="<?php echo $producto['id']; ?>" data-tipo="contrato" <?php echo $producto['Estado'] ? 'checked' : ''; ?>> <span class="custom-switch-indicator"></span>
+</label>
+    </div></td>
 
                         <td><a href="views/viewproducto.php?id_producto=<?php echo $producto['id']; ?>" data-toggle="tooltip" title="Ver Producto"><i class="fas fa-eye btn btn-primary miconoz"></i></a> 
-                        <a data-bs-toggle="modal"
-                            data-bs-target="#modalupdate" href="#" onclick="cargarDatosProducto(<?php echo $producto['id']; ?>)" data-toggle="tooltip" title="Editar Cliente"><i class="fas fa-pencil-alt btn btn-success miconoz"></i></a> <a href="#" data-toggle="tooltip" title="Eliminar Cliente" onclick="eliminarProducto(<?php echo $producto['id']; ?>)"><i class="fas fa-trash-alt btn btn-danger micono"></i></a></td>
+                        <button type="button" class="btn btn-success micono" data-bs-toggle="modal" data-bs-target="#modalupdate" data-idproducto="<?php echo $producto['id']; ?>" onclick="loadClienteData(this)" ><i class="fas fa-pencil-alt"></i></button>
+                        </td>
                       </tr>
                     <?php endforeach; ?>
                   </tbody>
@@ -78,6 +86,23 @@ include 'componentes/sidebar.php';
       <div class="modal-body">
         <form id="agregarproducto">
           <div class="row">
+            
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="clientes">Nombre Cliente</label>
+                <div class="input-group">
+                
+                <select class="form-control" name="clientes" id="clientes">
+                  <?php foreach ($clientes as $cliente): ?>
+                    <option value="<?php echo $cliente['id_cliente']; ?>">
+                      <?php echo $clientesMap[$cliente['id_cliente']]['nombreCliente'] ?? ''; ?>
+                    </option>
+                  <?php endforeach; ?>
+                </select>
+                  </div>
+              </div>
+            </div>
+
             <div class="col-md-6">
               <div class="form-group">
                 <label for="nombreProducto">Nombre del Producto</label>
@@ -89,18 +114,6 @@ include 'componentes/sidebar.php';
                   </div>
                   <input type="text" class="form-control" id="nombreProducto" placeholder="Nombre del Producto" name="nombreProducto" required>
                 </div>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="clientes">Clientes</label>
-                <select class="form-control" name="clientes" id="clientes">
-                  <?php foreach ($clientes as $cliente): ?>
-                    <option value="<?php echo $cliente['id_cliente']; ?>">
-                      <?php echo $clientesMap[$cliente['id_cliente']]['nombreCliente'] ?? ''; ?>
-                    </option>
-                  <?php endforeach; ?>
-                </select>
               </div>
             </div>
           </div>
@@ -148,7 +161,7 @@ include 'componentes/sidebar.php';
               </div>
             </div>
           </div>
-          <button type="submit" class="btn btn-primary">Actualizar</button>
+          <button type="submit" class="btn btn-primary">Actualizar Producto</button>
         </form>
       </div>
     </div>
@@ -163,7 +176,7 @@ include 'componentes/sidebar.php';
 
 <!-- script para obtener funciones -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+<script src="assets/js/toggleProductos.js"></script>
 <script src="assets/js/producto/agregarproducto.js"></script>
 <script src="assets/js/producto/eliminarproducto.js"></script>
 <script src="assets/js/producto/updateproductos.js"></script>

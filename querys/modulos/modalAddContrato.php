@@ -32,7 +32,7 @@
                 <label for="idProducto">Seleccione un Producto</label>
                 <select class="form-control" id="idProducto" name="idProducto" required>
                   <?php foreach ($productosMap as $producto): ?>
-                    <option value="<?php echo $producto[0]['Id_Producto']; ?>"><?php echo $producto[0]['NombreDelProducto']; ?></option>
+                    <option value='<?php echo $producto[0]['Id_Producto']; ?>'><?php echo $producto[0]['NombreDelProducto']; ?></option>
                   <?php endforeach; ?>
                 </select>
               </div>

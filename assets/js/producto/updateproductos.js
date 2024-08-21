@@ -1,116 +1,176 @@
-const SUPABASE_URL = 'https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Productos';
-const SUPABASE_URL_CLIENTE = 'https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Clientes';
+document.addEventListener('DOMContentLoaded', function() {
+    const updateForm = document.getElementById('updateForm');
+    const updateClientName = document.getElementById('updateClientName');
+    const updateProductName = document.getElementById('updateProductName');
+    const updateId = document.getElementById('updateId');
+    let clientesMap = {};
 
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc';
+    // Cargar el mapa de clientes al inicio
+    cargarClientesMap();
 
-const headersList = {
-    "Accept": "*/*",
-    "User-Agent": "Thunder Client (https://www.thunderclient.com)",
-    "apikey": SUPABASE_KEY,
-    "Authorization": `Bearer ${SUPABASE_KEY}`,
-    "Content-Type": "application/json"
-};
-
-function cargarDatosProducto(idProducto) {
-    console.log(`Cargando datos para el producto con ID: ${idProducto}`);
-
-    fetch(`${SUPABASE_URL}?id=eq.${idProducto}&select=*`, {
-        method: 'GET',
-        headers: headersList
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`Error al obtener el producto: ${response.statusText}`);
+    async function cargarClientesMap() {
+        const headersList = {
+            "Accept": "*/*",
+            "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc"
         }
-        return response.json();
-    })
-    .then(data => {
-        console.log('Datos recibidos:', data);
 
-        if (data && data.length > 0) {
-            const producto = data[0];
-
-            // Realizar la segunda solicitud para obtener todos los clientes
-            return fetch(`${SUPABASE_URL_CLIENTE}?select=*`, {
-                method: 'GET',
+        try {
+            const response = await fetch("https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Clientes?select=id_cliente,nombreCliente", {
+                method: "GET",
                 headers: headersList
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`Error al obtener los clientes: ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .then(clientesData => {
-                console.log('Datos de los clientes recibidos:', clientesData);
-
-                // Asignar los valores a los campos correspondientes
-                document.getElementById('updateId').value = producto.id || '';
-                document.getElementById('updateProductName').value = producto.NombreDelProducto || '';
-
-                // Cargar el select con el cliente asociado y los demás clientes
-                const selectElement = document.getElementById('updateClientName');
-                selectElement.innerHTML = ''; // Limpiar el select antes de llenarlo
-
-                // Agregar el cliente asociado primero
-                selectElement.innerHTML += `
-                    <option value="${producto.Id_Cliente}" selected>
-                        ${clientesData.find(cliente => cliente.id_cliente === producto.Id_Cliente)?.nombreCliente || 'Cliente no encontrado'}
-                    </option>
-                `;
-
-                // Agregar los demás clientes
-                clientesData.forEach(cliente => {
-                    if (cliente.id_cliente !== producto.Id_Cliente) {
-                        selectElement.innerHTML += `
-                            <option value="${cliente.id_cliente}">
-                                ${cliente.nombreCliente}
-                            </option>
-                        `;
-                    }
-                });
             });
-        } else {
-            console.log('No se encontraron datos para el ID proporcionado');
+
+            if (response.ok) {
+                const clientes = await response.json();
+                clientesMap = clientes.reduce((map, cliente) => {
+                    map[cliente.id_cliente] = cliente.nombreCliente;
+                    return map;
+                }, {});
+                populateClientSelect();
+            } else {
+                throw new Error('No se pudieron obtener los clientes');
+            }
+        } catch (error) {
+            console.error('Error al cargar clientes:', error);
         }
-    })
-    .catch(error => console.error('Error:', error));
-}
+    }
 
-
-
-document.getElementById('updateForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const formData = new FormData(this);
-    const idProducto = formData.get('id');
-    const form = document.getElementById('updateForm');
-    
-    console.log(form.updateProductName.value);
-
-    const productoActualizado = {
-        NombreDelProducto: form.updateProductName.value
-    };
-
-    fetch(`${SUPABASE_URL}?id=eq.${idProducto}`, {
-        method: 'PATCH',
-        headers: {
-            ...headersList,
-            'Prefer': 'return=minimal'
-        },
-        body: JSON.stringify(productoActualizado)
-    })
-    .then(response => {
-        if (response.ok) {
-            console.log('Producto actualizado correctamente');
-            $('#modalupdate').modal('hide');
-       
-            // Recargar sitio
-        location.reload();
-        } else {
-            throw new Error('Error al actualizar el producto');
+    function populateClientSelect() {
+        updateClientName.innerHTML = '';
+        for (let id in clientesMap) {
+            const option = document.createElement('option');
+            option.value = id;
+            option.textContent = clientesMap[id];
+            updateClientName.appendChild(option);
         }
-    })
-    .catch(error => {
-        console.error('Error:', error);
+    }
+
+    window.loadClienteData = function(button) {
+        const productId = button.getAttribute('data-idproducto');
+        updateId.value = productId;
+
+        // Fetch product data
+        fetch(`https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Productos?id=eq.${productId}`, {
+            headers: {
+                "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
+                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc"
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.length > 0) {
+                const product = data[0];
+                updateClientName.value = product.Id_Cliente;
+                updateProductName.value = product.NombreDelProducto;
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    updateForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        const productId = updateId.value;
+        const clientId = updateClientName.value;
+        const productName = updateProductName.value;
+
+        const headersList = {
+            "Accept": "*/*",
+            "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
+            "Content-Type": "application/json"
+        }
+
+        const bodyContent = JSON.stringify({
+            "NombreDelProducto": productName,
+            "Id_Cliente": clientId
+        });
+
+        fetch(`https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Productos?id=eq.${productId}`, {
+            method: "PATCH",
+            body: bodyContent,
+            headers: headersList
+        })
+        .then(response => {
+            if (response.ok) {
+                Swal.fire({
+                    title: 'Éxito!',
+                    text: 'Producto actualizado correctamente',
+                    icon: 'success',
+                    confirmButtonText: 'Ok'
+                });
+                $('#modalupdate').modal('hide');
+                actualizarTabla();
+            } else {
+                throw new Error('No se pudo actualizar el producto');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            Swal.fire({
+                title: 'Error!',
+                text: 'Ocurrió un error al actualizar el producto',
+                icon: 'error',
+                confirmButtonText: 'Ok'
+            });
+        });
     });
+
+    async function actualizarTabla() {
+        const headersList = {
+            "Accept": "*/*",
+            "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
+            "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc"
+        }
+
+        try {
+            const response = await fetch("https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Productos?select=*", {
+                method: "GET",
+                headers: headersList
+            });
+
+            if (response.ok) {
+                const productos = await response.json();
+                actualizarTablaHTML(productos);
+            } else {
+                throw new Error('No se pudieron obtener los productos');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    function actualizarTablaHTML(productos) {
+        const tableBody = document.querySelector('#tableExportadora tbody');
+        tableBody.innerHTML = '';
+        productos.forEach(producto => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${producto.id}</td>
+                <td>${clientesMap[producto.Id_Cliente] || 'Cliente no encontrado'}</td>
+                <td>${producto.NombreDelProducto}</td>
+                <td>
+                    <div class="alineado">
+                        <label class="custom-switch sino" data-toggle="tooltip" 
+                            title="${producto.Estado ? 'Desactivar Producto' : 'Activar Producto'}">
+                            <input type="checkbox" 
+                                class="custom-switch-input estado-switchP"
+                                data-id="${producto.id}" data-tipo="contrato" ${producto.Estado ? 'checked' : ''}>
+                            <span class="custom-switch-indicator"></span>
+                        </label>
+                    </div>
+                </td>
+                <td>
+                    <a href="views/viewproducto.php?id_producto=${producto.id}" data-toggle="tooltip" title="Ver Producto">
+                        <i class="fas fa-eye btn btn-primary miconoz"></i>
+                    </a>
+                    <button type="button" class="btn btn-success micono" data-bs-toggle="modal" data-bs-target="#modalupdate" data-idproducto="${producto.id}" onclick="loadClienteData(this)">
+                        <i class="fas fa-pencil-alt"></i>
+                    </button>
+                </td>
+            `;
+            tableBody.appendChild(row);
+        });
+    }
 });

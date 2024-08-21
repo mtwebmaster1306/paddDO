@@ -42,6 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 showConfirmButton: false,
                 timer: 1500
             });
+             
 
         } catch (error) {
             console.error('Error al actualizar el estado:', error);
@@ -91,3 +92,60 @@ document.addEventListener('DOMContentLoaded', function() {
 
     console.log('Script de toggle de estado de proveedores inicializado');
 });
+
+async function actualizarTabla() {
+    const headersList = {
+        "Accept": "*/*",
+        "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc"
+    }
+
+    try {
+        const response = await fetch("https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Productos?select=*", {
+            method: "GET",
+            headers: headersList
+        });
+
+        if (response.ok) {
+            const productos = await response.json();
+            actualizarTablaHTML(productos);
+        } else {
+            throw new Error('No se pudieron obtener los productos');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+function actualizarTablaHTML(productos) {
+    const tableBody = document.querySelector('#tableExportadora tbody');
+    tableBody.innerHTML = '';
+    productos.forEach(producto => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${producto.id}</td>
+            <td>${clientesMap[producto.Id_Cliente] || 'Cliente no encontrado'}</td>
+            <td>${producto.NombreDelProducto}</td>
+            <td>
+                <div class="alineado">
+                    <label class="custom-switch sino" data-toggle="tooltip" 
+                        title="${producto.Estado ? 'Desactivar Producto' : 'Activar Producto'}">
+                        <input type="checkbox" 
+                            class="custom-switch-input estado-switchP"
+                            data-id="${producto.id}" data-tipo="contrato" ${producto.Estado ? 'checked' : ''}>
+                        <span class="custom-switch-indicator"></span>
+                    </label>
+                </div>
+            </td>
+            <td>
+                <a href="views/viewproducto.php?id_producto=${producto.id}" data-toggle="tooltip" title="Ver Producto">
+                    <i class="fas fa-eye btn btn-primary miconoz"></i>
+                </a>
+                <button type="button" class="btn btn-success micono" data-bs-toggle="modal" data-bs-target="#modalupdate" data-idproducto="${producto.id}" onclick="loadClienteData(this)">
+                    <i class="fas fa-pencil-alt"></i>
+                </button>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
+}

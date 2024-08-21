@@ -110,7 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             if (response.ok) {
                 const productos = await response.json();
-                actualizarTablaHTML(productos);
+                window.location.reload();
             } else {
                 throw new Error('No se pudieron obtener los productos');
             }

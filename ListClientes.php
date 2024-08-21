@@ -69,7 +69,7 @@ include 'componentes/sidebar.php';
                                                 <button type="button" class="btn btn-success micono" data-bs-toggle="modal" data-bs-target="#actualizarcliente" data-idcliente="<?php echo $cliente['id_cliente']; ?>" onclick="loadClienteData(this)" ><i class="fas fa-pencil-alt"></i></button>
 
 
-                                                <a href="#" class="btn btn-danger micono delete-client" data-id="<?php echo $cliente['id_cliente']; ?>" data-toggle="tooltip" title="Eliminar Cliente"><i class="fas fa-trash-alt"></i></a>
+                                                
 
                                             </td>
                                         </tr>

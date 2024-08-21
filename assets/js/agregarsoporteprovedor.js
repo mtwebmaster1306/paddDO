@@ -326,7 +326,7 @@ function populateTable(soportes) {
             <td>${soporte.razonSocial}</td>
             <td>${soporte.medios.length > 0 ? soporte.medios.join(", ") : "No hay medios asociados"}</td>
             <td>
-                <a class="btn btn-primary micono" href="views/viewSoporte.php?id_soporte=${soporte.id_soporte}" data-toggle="tooltip" title="Ver Soporte"><i class="fas fa-eye"></i></a> 
+                <a class="btn btn-primary micono" href="viewSoporte.php?id_soporte=${soporte.id_soporte}" data-toggle="tooltip" title="Ver Soporte"><i class="fas fa-eye"></i></a> 
                 <a class="btn btn-success micono" data-bs-toggle="modal" data-bs-target="#actualizarsoporte22" data-id-soporte="${soporte.id_soporte}" onclick="loadsoportepro(this)"><i class="fas fa-pencil-alt"></i></a>
             </td>
         `;

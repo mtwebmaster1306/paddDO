@@ -1023,7 +1023,12 @@ include '../componentes/sidebar.php';
 
 
 
-
+<script>
+function getSoporteData(idSoporte) {
+    var soportesMap = <?php echo json_encode($soportesMap); ?>;
+    return soportesMap[idSoporte] || null;
+}
+</script>
 
 
 <script>

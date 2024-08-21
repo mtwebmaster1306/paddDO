@@ -1,22 +1,4 @@
-document.getElementById('region').addEventListener('change', function () {
-    var regionId = this.value;
-    var comunaSelect = document.getElementById('comuna');
-    var opcionesComunas = comunaSelect.querySelectorAll('option');
 
-    opcionesComunas.forEach(function (opcion) {
-        if (opcion.getAttribute('data-region') === regionId) {
-            opcion.style.display = 'block';
-        } else {
-            opcion.style.display = 'none';
-        }
-    });
-
-    var firstVisibleOption = comunaSelect.querySelector('option[data-region="' + regionId + '"]');
-    if (firstVisibleOption) {
-        firstVisibleOption.selected = true;
-    }
-});
-document.getElementById('region').dispatchEvent(new Event('change'));
 document.getElementById('regionx').addEventListener('change', function () {
     var regionId = this.value;
     var comunaSelect = document.getElementById('comunax');

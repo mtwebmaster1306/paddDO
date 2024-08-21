@@ -319,12 +319,18 @@ li.items-list-compo i {
 }
 .btn.btn-primary.micono {
   height: 29px;
-  padding-top: 0px !important;
+  padding-top: 2px !important;
   margin-bottom: 0px !important;
 }
 .svg-inline--fa.fa-eye.btn.btn-primary.miconoz, .svg-inline--fa.fa-pencil.btn.btn-success.miconoz {
   height: 17px;
-
-  padding: 5px;
+padding: 5px;
   width: 15px;
+}
+body{
+  font-family: "Segoe UI",arial !important;
+}
+.theme-white .page-item.disabled .page-link {
+  color: #6777ef;
+  font-size: 13px !important;
 }

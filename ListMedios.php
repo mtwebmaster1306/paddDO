@@ -34,6 +34,7 @@ include 'componentes/sidebar.php';
                                             <th>Nombre del Medio</th>
                                             <th>Código</th>
                                             <th>Clasificación</th>
+                                            <th>Estado</th>
                                             <th>Acciones</th>
                                         </tr>
                                     </thead>
@@ -44,6 +45,16 @@ include 'componentes/sidebar.php';
                                             <td><?php echo $medio['NombredelMedio']; ?></td>
                                             <td><?php echo $medio['codigo']; ?></td>
                                             <td><?php echo $clasifiacionmediosMap[$medio['Id_Clasificacion']]['NombreClasificacion'] ?? ''; ?></td>
+                                            <td>
+                                            <div class="alineado">
+       <label class="custom-switch sino" data-toggle="tooltip" 
+       title="<?php echo $medio['Estado'] ? 'Desactivar Medio' : 'Activar Medio'; ?>">
+    <input type="checkbox" 
+           class="custom-switch-input estado-switchM"
+           data-id="<?php echo $medio['id']; ?>" data-tipo="medio" <?php echo $medio['Estado'] ? 'checked' : ''; ?>> <span class="custom-switch-indicator"></span>
+</label>
+    </div>
+                                            </td>
                                             <td><a href="views/viewMedio.php?id=<?php echo $medio['id']; ?>" data-toggle="tooltip" title="Ver Medio"><i class="fas fa-eye btn btn-primary miconoz"></i></a> 
                                             <a href="#" 
    class="btn6 open-modal" 
@@ -53,9 +64,7 @@ include 'componentes/sidebar.php';
    title="Editar Medio">
     <i class="fas fa-pencil-alt btn btn-success miconoz"></i></a>
                                             
-                                            <a type="button" href="#" onclick="confirmarEliminacion(<?php echo htmlspecialchars($medio['id']); ?>); return false;" data-toggle="tooltip" title="Eliminar Medio">
-                                                <i class="fas fa-trash-alt btn btn-danger micono"></i>
-                                            </a></td>
+                                         </td>
                                         </tr>
                                         <?php endforeach; ?>
                                     </tbody>
@@ -205,57 +214,12 @@ fas fa-barcode"></i></span>
 
 
 <?php include 'componentes/settings.php'; ?>
-
+<script src="assets/js/toggleMedios.js"></script>
 <script src="../../../assets/js/updateMedio.js"></script>
 <script src="../../../assets/js/addMedio.js"></script>
 
 
-<script>
-function confirmarEliminacion(id) {
-    Swal.fire({
-        title: '¿Estás seguro?',
-        text: "No podrás revertir esta acción!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Sí, eliminar!',
-        cancelButtonText: 'Cancelar'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            // Si el usuario confirma, procedemos con la eliminación
-            fetch(`/querys/modulos/deleteMedio.php?id=${id}`)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        Swal.fire(
-                            'Eliminado!',
-                            'El medio ha sido eliminado.',
-                            'success'
-                        ).then(() => {
-                            // Redirigir a ListMedios.php después de cerrar la alerta
-                            window.location.href = 'ListMedios.php';
-                        });
-                    } else {
-                        Swal.fire(
-                            'Error!',
-                            'No se pudo eliminar el medio.',
-                            'error'
-                        );
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    Swal.fire(
-                        'Error!',
-                        'Ocurrió un error al intentar eliminar el medio.',
-                        'error'
-                    );
-                });
-        }
-    });
-}
-</script>
+
 
 
 <?php include 'componentes/footer.php'; ?>

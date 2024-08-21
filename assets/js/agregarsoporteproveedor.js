@@ -84,8 +84,8 @@ async function submitForm(event) {
             });
 
             if (soporteResponse.ok) {
-                console.log("Soporte registrado correctamente");
-                alert("Registro correcto");
+                mostrarExito('¡Soporte agregado exitosamente!');
+                $('#agregarSoportessss').modal('hide');
                 location.reload();
             } else {
                 const errorText = await soporteResponse.text();
@@ -101,6 +101,15 @@ async function submitForm(event) {
         console.error("Error:", error);
         alert("Error de conexión, inténtelo nuevamente");
     }
+}
+function mostrarExito(mensaje) {
+    Swal.fire({
+        icon: 'success',
+        title: 'Éxito',
+        text: mensaje,
+        showConfirmButton: false,
+        timer: 1500
+    });
 }
 
 document.getElementById('formualarioSoporte').addEventListener('submit', submitForm);

@@ -22,6 +22,7 @@ function makeRequest($url) {
 }
 
 // Obtener datos
+$contactos = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/contactos?select=*');
 $provedor_soportes = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/proveedor_soporte?select=*');
 $proveedor_medios = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/proveedor_medios?select=*');
 $soporte_medios = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/soporte_medios?select=*');

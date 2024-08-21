@@ -1,3 +1,125 @@
+
+document.addEventListener('DOMContentLoaded', function () {
+    $('#agregarsoporteprov').on('shown.bs.modal', function (event) {
+        var button = $(event.relatedTarget);
+        var idProveedor = button.data('id-proveedor');
+        console.log("ID Proveedor:", idProveedor);
+
+        var inputPrueba = document.getElementById('pruebaid');
+        inputPrueba.value = idProveedor;
+
+        // Realizar la petición para obtener todos los soportes vinculados al proveedor actual
+        fetch(`https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/proveedor_soporte?select=id_soporte&id_proveedor=eq.${idProveedor}`, {
+            headers: {
+                'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+                'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+            }
+        })
+        .then(response => response.json())
+        .then(proveedor_soportes => {
+            let vinculados_str = '';
+            if (proveedor_soportes && proveedor_soportes.length > 0) {
+                const vinculados = proveedor_soportes.map(soporte => soporte.id_soporte);
+                vinculados_str = vinculados.filter(id => id).join(','); // Filtrar valores vacíos
+            } 
+
+            // Realizar la petición para obtener soportes no vinculados o todos los soportes si no hay vinculados
+            const url = vinculados_str 
+                ? `https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Soportes?id_soporte=not.in.(${vinculados_str})&select=*`
+                : `https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Soportes?select=*`;
+
+            return fetch(url, {
+                headers: {
+                    'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+                    'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc',
+                }
+            })
+        })
+        .then(response => response.json())
+        .then(soportes_no_vinculados => {
+            console.log(soportes_no_vinculados);
+
+            var soporteSelect = document.getElementById('soporteSelect');
+            soporteSelect.innerHTML = '';
+
+            if (soportes_no_vinculados && soportes_no_vinculados.length > 0) {
+                soportes_no_vinculados.forEach(function (soporte) {
+                    var option = document.createElement('option');
+                    option.value = soporte.id_soporte;
+                    option.textContent = soporte.nombreIdentficiador;
+                    soporteSelect.appendChild(option);
+                });
+            } else {
+                console.warn("No se encontraron soportes no vinculados.");
+            }
+        })
+        .catch(error => console.error("Error al obtener soportes:", error));
+    });
+
+
+
+    document.getElementById('formagregarsoporte3').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    var idProveedor = document.getElementsByName('pruebaid')[0].value;
+    var idSoporte = document.getElementById('soporteSelect').value;
+
+    if (!idProveedor || !idSoporte) {
+        console.error("ID Proveedor o ID Soporte no válidos.");
+        return;
+    }
+
+    fetch('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/proveedor_soporte', {
+        method: 'POST',
+        headers: {
+                    "Content-Type": "application/json",
+                    "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc"
+                },
+        body: JSON.stringify({
+            id_proveedor: idProveedor,
+            id_soporte: idSoporte
+        })
+    })
+    .then(response => {
+        console.log('Código de estado:', response.status); // Imprime el código de estado
+        return response.text().then(text => {
+            if (response.ok) {
+                mostrarExito('Soporte agregado correctamente!');
+                $('#agregarsoporteprov').modal('hide');
+                refreshTable(idProveedor);
+                try {
+                    return JSON.parse(text); // Intenta parsear el texto como JSON
+                } catch (error) {
+                    throw new Error('Respuesta no es JSON válido: ' + text);
+                }
+            } else {
+                throw new Error(`Error ${response.status}: ${text}`);
+            }
+        });
+    })
+    .then(data => {
+        console.log("Soporte registrado exitosamente:", data);
+        // Puedes mostrar un mensaje de éxito o cerrar el modal aquí
+        $('#agregarsoporteprov').modal('hide');
+    })
+    .catch(error => {
+        console.error("Error al registrar el soporte:", error.message);
+        // Puedes mostrar un mensaje de error aquí
+    });
+});
+
+
+
+});
+
+
+
+
+
+
+
+
 async function obtenerNuevoIdSoporte() {
     try {
         let response = await fetch("https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Soportes?select=id_soporte&order=id_soporte.desc&limit=1", {
@@ -26,7 +148,7 @@ async function obtenerNuevoIdSoporte() {
 }
 
 function getFormDataSoporte() {
-    const formData = new FormData(document.getElementById('formualarioSoporte'));
+    const formData = new FormData(document.getElementById('formualarioSoporteProv'));
     const dataObject = {};
     formData.forEach((value, key) => {
         if (key === 'id_medios[]') {
@@ -45,12 +167,13 @@ function getFormDataSoporte() {
     };
 }
 
-async function submitFormSoporte(event) {
+async function submitFormSoporte2(event) {
     event.preventDefault(); // Evita la recarga de la página
 
     const formData = getFormDataSoporte();
     const nuevoIdSoporte = await obtenerNuevoIdSoporte(); // Obtener el nuevo ID
-    const idProveedor = formData.id_proveedor;
+    const idProveedor = formData.id_proveedor; 
+    console.log(idProveedor,"Holaaa");
     let soporteData;
     if (formData.revision === "on") {
         // Usar los datos del proveedor
@@ -149,11 +272,11 @@ async function submitFormSoporte(event) {
                 }
 
             });
-                
-                mostrarExito('¡Soporte agregado exitosamente!');
-                $('#agregarSoportessss').modal('hide');
-            $('#formualarioSoporte')[0].reset();
-            location.reload();
+
+            mostrarExito('¡Soporte agregado exitosamente!');
+            $('#agregarSoportessss').modal('hide');
+            $('#formualarioSoporteProv')[0].reset();
+            refreshTable(idProveedor);
             } else {
                 const errorData = await responseSoporteMedios.text(); // Obtener respuesta como texto
                 console.error("Error en soporte_medios:", errorData);
@@ -169,6 +292,56 @@ async function submitFormSoporte(event) {
         alert("Error en la solicitud, intente nuevamente");
     }
 }
+
+function refreshTable(proveedorId) {
+    if (proveedorId) {
+        fetch(`/get_soportes.php?proveedor_id=${proveedorId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                populateTable(data); // Actualiza la tabla con los datos recibidos
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    }
+}
+
+function populateTable(soportes) {
+    const tbody = document.getElementById('soportes-tbody');
+    tbody.innerHTML = ''; // Clear existing rows
+
+    soportes.forEach(soporte => {
+        const row = document.createElement('tr');
+        row.className = 'soporte-row';
+        row.dataset.soporteId = soporte.id_soporte;
+
+        row.innerHTML = `
+            <td>${soporte.id_soporte}</td>
+            <td>${soporte.nombreIdentficiador}</td>
+            <td>${soporte.razonSocial}</td>
+            <td>${soporte.medios.length > 0 ? soporte.medios.join(", ") : "No hay medios asociados"}</td>
+            <td>
+                <a class="btn btn-primary micono" href="views/viewSoporte.php?id_soporte=${soporte.id_soporte}" data-toggle="tooltip" title="Ver Soporte"><i class="fas fa-eye"></i></a> 
+                <a class="btn btn-success micono" data-bs-toggle="modal" data-bs-target="#actualizarsoporte22" data-id-soporte="${soporte.id_soporte}" onclick="loadsoportepro(this)"><i class="fas fa-pencil-alt"></i></a>
+            </td>
+        `;
+        tbody.appendChild(row);
+    });
+}
+
+
+
+
+
+
+
+
+
 function mostrarExito(mensaje) {
     Swal.fire({
         icon: 'success',
@@ -179,7 +352,7 @@ function mostrarExito(mensaje) {
     });
 }
 
-
-
 // Asigna el evento de envío al formulario de agregar soporte
-document.getElementById('formualarioSoporte').addEventListener('submit', submitFormSoporte);
+document.getElementById('formualarioSoporteProv').addEventListener('submit', submitFormSoporte2);
+
+

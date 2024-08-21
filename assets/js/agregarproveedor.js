@@ -123,8 +123,10 @@ async function submitForm2(event) {
 
             if (responseProveedorMedios.ok) {
                 mostrarExito('Comisión agregada correctamente');
-
-                location.reload();
+                $('#agregarProveedor').modal('hide');
+                $('#formularioAgregarProveedor')[0].reset();
+                // Asegurarse de que la tabla se haya actualizado
+                refreshTable(nuevoIdProveedor);
             } else {
                 const errorData = await responseProveedorMedios.text(); // Obtener respuesta como texto
                 console.error("Error en proveedor_medios:", errorData);
@@ -139,6 +141,67 @@ async function submitForm2(event) {
         console.error("Error en la solicitud:", error);
         alert("Error en la solicitud, intente nuevamente");
     }
+}
+function refreshTable() {
+    fetch('/get_proveedores.php')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            populateTable(data); // Actualiza la tabla con los datos recibidos
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+}
+
+function populateTable(proveedores) {
+    const tbody = document.getElementById('proveedores-tbody');
+    tbody.innerHTML = ''; // Clear existing rows
+
+    proveedores.forEach(proveedor => {
+        const row = document.createElement('tr');
+        row.className = 'proveedor-row';
+        row.dataset.proveedorId = proveedor.id_proveedor;
+
+        row.innerHTML = `
+            <tr class="proveedor-row" data-proveedor-id="${proveedor.id_proveedor}">
+            <td><i class="expand-icon fas fa-angle-right"></i></td>
+            <td>${proveedor.id_proveedor}</td>
+            <td>
+            ${proveedor.medios.length > 0 ? 
+                `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="dist_marketing-btn-icon__AWP8I" data-bs-toggle="tooltip" data-bs-html="true" title="Información sobre medios">
+                    <path fill-rule="evenodd" d="" clip-rule="evenodd" d="M24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274" fill="currentColor"></path>
+                </svg>${proveedor.medios.join(", ")} ` : 
+                "No hay medios asociados"}
+                </td>            
+                <td>${proveedor.nombreProveedor}</td>
+                    <td>${proveedor.razonSocial}</td>
+                    <td>${proveedor.rutProveedor}</td>
+                    <td>0</td>
+                <td>
+                    <div class="alineado">
+                        <label class="custom-switch sino" data-toggle="tooltip" 
+                        title="${proveedor.estado ? 'Desactivar Proveedor' : 'Activar Cliente'}">
+                            <input type="checkbox" 
+                                class="custom-switch-input estado-switch2"
+                                data-id="${proveedor.id_proveedor}" data-tipo="proveedor" ${proveedor.estado ? 'checked' : ''}>
+                            <span class="custom-switch-indicator"></span>
+                        </label>
+                    </div>
+                </td>
+
+           <td>
+                <a class="btn btn-primary" href="views/viewProveedor.php?id_proveedor=${proveedor.id_proveedor}" data-toggle="tooltip" title="Ver Proveedor"><i class="fas fa-eye"></i></a>
+                <a class="btn btn-success" data-bs-toggle="modal" data-bs-target="#actualizarProveedor" data-id-proveedor="${proveedor.id_proveedor}" onclick="loadProveedor(this)"><i class="fas fa-pencil-alt"></i></a>
+            </td>
+            </tr>
+        `;
+        tbody.appendChild(row);
+    });
 }
 function mostrarExito(mensaje) {
     Swal.fire({

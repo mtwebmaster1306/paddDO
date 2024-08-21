@@ -3,16 +3,10 @@
 .opeo{     margin-top: -13px; padding: 12px 18px; margin-bottom: 13px; margin-left: 20px;}
 .loiloi{background:#f04d37; border-radius:7px;}
 .bunbun:hover .toltipcreado{display:block !important;}
-.toltipcreado{display:none; background: #000;
-  position: absolute;
-  bottom: 43px;
-  padding-right: 20px;
-  padding-top: 5px;
-  border-radius: 6px;
-  color: white;
-  font-family: 'Nunito';
-  right: 58px;
-  font-size: 10px;}
+.conshan{    width: 100%;
+  padding: 10px 8px;
+  display: flex;
+  align-items: center;}
 .labelforms{margin-top:20px;}
 .titulo-registro{font-size:15px;}
 .selected-options {
@@ -28,7 +22,7 @@
   background-color: white;
 }
 button.dropdown-button {
-  width:89%;
+  width:87%;
   background-color:white;
   border: 1px solid #e4e6fc;
   color:#77797d;

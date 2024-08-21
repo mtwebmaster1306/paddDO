@@ -5,11 +5,37 @@ $supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJ
 
 if (isset($_GET['proveedor_id'])) {
     $proveedor_id = $_GET['proveedor_id'];
-    
-    // URL para obtener los soportes del proveedor
-    $urlSoportes = $supabaseUrl . 'Soportes?select=*&id_proveedor=eq.'. $proveedor_id;
 
-    // Inicializar cURL para los soportes
+    // Obtener los id_soporte correspondientes al id_proveedor desde la tabla proveedor_soporte
+    $urlProveedorSoportes = $supabaseUrl . 'proveedor_soporte?select=id_soporte&id_proveedor=eq.' . $proveedor_id;
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $urlProveedorSoportes);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+        'apikey: ' . $supabaseKey,
+        'Authorization: Bearer ' . $supabaseKey
+    ));
+    $responseProveedorSoportes = curl_exec($ch);
+    curl_close($ch);
+
+    if ($responseProveedorSoportes === false) {
+        echo json_encode(array('error' => 'Error en la solicitud a proveedor_soporte'));
+        exit;
+    }
+
+    $proveedorSoportes = json_decode($responseProveedorSoportes, true);
+    
+    // Obtener los id_soporte de los soportes
+    $idsSoportes = array_column($proveedorSoportes, 'id_soporte');
+    
+    // Si no hay soportes, no continuar
+    if (empty($idsSoportes)) {
+        echo json_encode(array()); // Retorna un array vacío de soportes
+        exit;
+    }
+
+    // Obtener los soportes desde la tabla Soportes usando los id_soporte
+    $urlSoportes = $supabaseUrl . 'Soportes?select=*&id_soporte=in.(' . implode(',', $idsSoportes) . ')';
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $urlSoportes);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -21,18 +47,16 @@ if (isset($_GET['proveedor_id'])) {
     curl_close($ch);
 
     if ($responseSoportes === false) {
-        echo json_encode(array('error' => 'Error en la solicitud a Supabase'));
+        echo json_encode(array('error' => 'Error en la solicitud a Soportes'));
         exit;
     }
 
     $soportes = json_decode($responseSoportes, true);
     
-    // Obtener los id_soporte de los soportes
+    // Obtener los ids de medios asociados a los soportes
     $idsSoportes = array_column($soportes, 'id_soporte');
-    
-    // Si no hay soportes, no continuar
     if (empty($idsSoportes)) {
-        echo json_encode($soportes); // Retorna un array vacío de soportes
+        echo json_encode(array()); // Retorna un array vacío si no hay soportes
         exit;
     }
 

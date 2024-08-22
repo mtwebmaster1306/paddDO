@@ -141,7 +141,9 @@ include 'componentes/sidebar.php';
                                             </div>
                                             </td>
                                             <td>
-                                                <a class="btn btn-primary micono" href="views/viewProveedor.php?id_proveedor=<?php echo $proveedor['id_proveedor']; ?>" data-toggle="tooltip" title="Ver Proveedor"><i class="fas fa-eye "></i></a> 
+                                            <a class="btn btn-primary micono" href="views/viewProveedor.php?id_proveedor=<?php echo $proveedor['id_proveedor']; ?>" data-toggle="tooltip" title="Ver Proveedor"><i class="fas fa-eye "></i></a> 
+
+                                                <a class="btn btn-primary micono" href="views/viewsoporteproveedor.php?id_proveedor=<?php echo $proveedor['id_proveedor']; ?>" data-toggle="tooltip" title="Ver Proveedor"><i class="fas fa-eye "></i></a> 
                                                 <a class="btn btn-success micono"  data-bs-toggle="modal" data-bs-target="#actualizarProveedor" data-idmedios="<?php echo $id_medios_json; ?>" data-idproveedor="<?php echo $proveedor['id_proveedor']; ?>" onclick="loadProveedorData(this)" ><i class="fas fa-pencil-alt"></i></a>
                                             </td>
                                         </tr>

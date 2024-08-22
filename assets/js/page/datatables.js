@@ -78,7 +78,8 @@ $('#tableExportadora').DataTable({
       targets: -1, // Última columna
       visible: true,
       searchable: true,
-      printable: false
+      printable: false,
+      ordering: false
     }
   ]
 });

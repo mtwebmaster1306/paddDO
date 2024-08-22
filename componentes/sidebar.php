@@ -18,13 +18,14 @@
                 <li><a class="nav-link" href="<?php echo $ruta; ?>ListMedios.php">Medios</a></li>
                 <li><a class="nav-link" href="<?php echo $ruta; ?>ListAgencia.php">Agencias</a></li>
                 <li><a class="nav-link" href="<?php echo $ruta; ?>ListProveedores.php">Proveedores</a></li>
+                <li><a class="nav-link" href="<?php echo $ruta; ?>ListSoportes.php">Soportes</a></li>
               </ul>
             </li>
             <li class="dropdown">
               <a href="#" class="menu-toggle nav-link has-dropdown fondo"><i data-feather="pie-chart"></i><span>Planificación de Medios</span></a>
               <ul class="dropdown-menu">
                 <li><a class="nav-link" href="<?php echo $ruta; ?>ListContratos.php">Contratos</a></li>
-                <li><a class="nav-link" href="<?php echo $ruta; ?>ListSoportes.php">Soportes</a></li>
+  
                 <li><a class="nav-link" href="<?php echo $ruta; ?>ListCampaign.php">Campañas</a></li>
                 <li><a class="nav-link" href="<?php echo $ruta; ?>ListTemas.php">Temas</a></li>
                 <li><a class="nav-link" href="<?php echo $ruta; ?>ListPlanes.php">Planes de Medios</a></li>

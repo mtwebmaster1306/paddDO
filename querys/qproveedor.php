@@ -34,7 +34,15 @@ $comunas = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Comunas
 $medios = makeRequest('https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Medios?select=*');
 // Debug: Imprimir los datos de proveedores para verificar la estructura
 // var_dump($proveedores);
+$proveedorCountMapSoport = [];
 
+foreach ($provedor_soportes as $item) {
+    $id_proveedor = $item['id_proveedor'];
+    if (!isset($proveedorCountMapSoport[$id_proveedor])) {
+        $proveedorCountMapSoport[$id_proveedor] = 0; // Inicializa el contador para este id_proveedor
+    }
+    $proveedorCountMapSoport[$id_proveedor]++; // Incrementa el contador
+}
 $proveedoresMap = [];
 foreach ($proveedores as $proveedore) {
     $proveedoresMap[$proveedore['id_proveedor']] = $proveedore;

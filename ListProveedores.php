@@ -59,16 +59,17 @@ include 'componentes/sidebar.php';
                         </div>
                         <div class="card-body">
                         <div class="table-responsive">
-                                <table class="table table-striped" id="tableExportadora">
+                                <table class="table table-striped" id="tableExportadora" >
                                     <thead>
                                         <tr>
-                                            <th></th>
+
                                             <th>ID</th>
                                             <th>Medio</th>
                                             <th>Nombre Proveedores</th>
                                             <th>Razón Social</th>
                                             <th>Rut</th>
                                             <th>N° de Soportes</th>
+                                            <th>Listado de Soportes</th>
                                             <th>Estado</th>
                                             <th>Acciones</th>
                                         </tr>
@@ -76,7 +77,7 @@ include 'componentes/sidebar.php';
                                     <tbody id="proveedores-tbody">
                                         <?php foreach ($proveedores as $proveedor): ?>
                                         <tr class="proveedor-row" data-proveedor-id="<?php echo $proveedor['id_proveedor']; ?>">
-                                            <td><i class="expand-icon fas fa-angle-right"></i></td>
+                                
                                             <td><?php echo $proveedor['id_proveedor']; ?></td>
                                             <td>
                                                                                                         <?php
@@ -120,14 +121,14 @@ include 'componentes/sidebar.php';
                                             <td><?php echo $proveedor['rutProveedor']; ?></td>
                                             <td>
                                                 <?php
-                                                $contador = 0;
-                                                foreach ($soportes as $soporte) {
-                                                    if ($proveedor['id_proveedor'] == $soporte['id_proveedor']) {
-                                                        $contador++;
-                                                    }
-                                                }
-                                                echo $contador;
+                                          $id_proveedor = $proveedor['id_proveedor'];
+                                          $soporteCount = isset($proveedorCountMapSoport[$id_proveedor]) ? $proveedorCountMapSoport[$id_proveedor] : 0;
+                            echo $soporteCount; 
                                                 ?>
+                                            </td>
+                                            <td>
+                                            <a class="btn btn-primary micono" href="views/viewSoporteProveedor.php?id_proveedor=<?php echo $proveedor['id_proveedor']; ?>" data-toggle="tooltip" title="Ver Soportes"><i class="fas fa-eye "></i> <span style="font-size:10px;font-weigth:400 !important;">Ver Soportes</span></a> 
+
                                             </td>
                                             <td>
                                             <div class="alineado">
@@ -143,7 +144,6 @@ include 'componentes/sidebar.php';
                                             <td>
                                             <a class="btn btn-primary micono" href="views/viewProveedor.php?id_proveedor=<?php echo $proveedor['id_proveedor']; ?>" data-toggle="tooltip" title="Ver Proveedor"><i class="fas fa-eye "></i></a> 
 
-                                                <a class="btn btn-primary micono" href="views/viewsoporteproveedor.php?id_proveedor=<?php echo $proveedor['id_proveedor']; ?>" data-toggle="tooltip" title="Ver Proveedor"><i class="fas fa-eye "></i></a> 
                                                 <a class="btn btn-success micono"  data-bs-toggle="modal" data-bs-target="#actualizarProveedor" data-idmedios="<?php echo $id_medios_json; ?>" data-idproveedor="<?php echo $proveedor['id_proveedor']; ?>" onclick="loadProveedorData(this)" ><i class="fas fa-pencil-alt"></i></a>
                                             </td>
                                         </tr>

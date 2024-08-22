@@ -97,41 +97,47 @@ async function submitForm2(event) {
             body: JSON.stringify(proveedorData),
             headers: {
                 "Content-Type": "application/json",
-                     "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc"
+                "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
+                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc"
             }
         });
-
+    
         if (responseProveedor.ok) {
             console.log("Proveedor registrado correctamente");
-
-            // Continuar con el registro de medios
-            const proveedorMediosData = formData.id_medios.map(id_medio => ({
-                id_proveedor: nuevoIdProveedor, // Usar el ID generado
-                id_medio: id_medio
-            }));
-
-            let responseProveedorMedios = await fetch("https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/proveedor_medios", {
-                method: "POST",
-                body: JSON.stringify(proveedorMediosData),
-                headers: {
-                    "Content-Type": "application/json",
-                         "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
-        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc"
+    
+            // Continuar con el registro de medios solo si hay medios seleccionados
+            if (formData.id_medios.length > 0) {
+                const proveedorMediosData = formData.id_medios.map(id_medio => ({
+                    id_proveedor: nuevoIdProveedor, // Usar el ID generado
+                    id_medio: id_medio
+                }));
+    
+                let responseProveedorMedios = await fetch("https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/proveedor_medios", {
+                    method: "POST",
+                    body: JSON.stringify(proveedorMediosData),
+                    headers: {
+                        "Content-Type": "application/json",
+                        "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc",
+                        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVreWp4emp3aHhvdHBkZnpjcGZxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjAyNzEwOTMsImV4cCI6MjAzNTg0NzA5M30.Vh4XAp1X6eJlEtqNNzYIoIuTPEweat14VQc9-InHhXc"
+                    }
+                });
+    
+                if (responseProveedorMedios.ok) {
+                    mostrarExito('Comisión agregada correctamente');
+                } else {
+                    const errorData = await responseProveedorMedios.text(); // Obtener respuesta como texto
+                    console.error("Error en proveedor_medios:", errorData);
+                    alert("Error al registrar los medios, intente nuevamente");
                 }
-            });
-
-            if (responseProveedorMedios.ok) {
-                mostrarExito('Comisión agregada correctamente');
-                $('#agregarProveedor').modal('hide');
-                $('#formularioAgregarProveedor')[0].reset();
-                // Asegurarse de que la tabla se haya actualizado
-                refreshTable(nuevoIdProveedor);
             } else {
-                const errorData = await responseProveedorMedios.text(); // Obtener respuesta como texto
-                console.error("Error en proveedor_medios:", errorData);
-                alert("Error al registrar los medios, intente nuevamente");
+                console.log("No se seleccionaron medios, se omitió la solicitud a proveedor_medios.");
             }
+    
+            // Cerrar modal y resetear formulario
+            $('#agregarProveedor').modal('hide');
+            $('#formularioAgregarProveedor')[0].reset();
+            // Asegurarse de que la tabla se haya actualizado
+            location.reload();
         } else {
             const errorData = await responseProveedor.text(); // Obtener respuesta como texto
             console.error("Error en proveedor:", errorData);

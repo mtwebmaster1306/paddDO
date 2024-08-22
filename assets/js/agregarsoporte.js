@@ -99,7 +99,7 @@ async function submitFormSoporte(event) {
         };
   
     }
-
+    console.log(soporteData,"holaaa")
     try {
         // Registrar el soporte
         let responseSoporte = await fetch("https://ekyjxzjwhxotpdfzcpfq.supabase.co/rest/v1/Soportes", {

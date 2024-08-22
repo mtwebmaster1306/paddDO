@@ -335,14 +335,14 @@ include '../componentes/sidebar.php';
             <div class="titulox"><h4>Listado de Soportes</h4></div>
             <div class="agregar">
                 <button style="border-radius:25px;" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarSoportessss"
-                    data-rso="<?php echo $datosProveedor['razonSocial'] ; ?>" data-nfo="<?php echo $datosProveedor['nombreFantasia'] ; ?>" data-rpo="${proveedor.rutProveedor}" data-gpo="${proveedor.giroProveedor}"
+                    data-rso="<?php echo $datosProveedor['razonSocial'] ; ?>" data-nfo="<?php echo $datosProveedor['nombreFantasia'] ; ?>" data-rpo="<?php echo $datosProveedor['rutProveedor'] ; ?>" data-gpo="<?php echo $datosProveedor['giroProveedor'] ; ?>"
                     data-nro="<?php echo $datosProveedor['nombreRepresentante'] ; ?>" data-rpoo="<?php echo $datosProveedor['rutRepresentante'] ; ?>" data-dfo="<?php echo $datosProveedor['direccionFacturacion'] ; ?>"
                     data-iro="<?php echo $datosProveedor['id_region'] ; ?>" data-ico="<?php echo $datosProveedor['id_comuna'] ; ?>" data-tco="<?php echo $datosProveedor['telCelular'] ; ?>" data-tfo="<?php echo $datosProveedor['telFijo'] ; ?>" 
                     data-elo="<?php echo $datosProveedor['email'] ; ?>" data-id="<?php echo $datosProveedor['id_proveedor'] ; ?>">
-                    <i class="fas fa-plus-circle"></i> Crear Soporte
+                    <i class="fas fa-plus-circle"></i> Crear Soporte 
                 </button>
                 <button style="border-radius:25px;" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarsoporteprov"
-                    data-id-proveedor="<?php echo $datosProveedor['id_proveedor'] ; ?>">
+                    data-id-proveedor="<?php echo $datosProveedor['id_proveedor'] ; ?>" >
                     <i class="fas fa-plus-circle"></i> Agregar Soporte
                 </button>
             </div>
@@ -809,6 +809,8 @@ include '../componentes/sidebar.php';
                 <form id="formualarioSoporteProv">
                     <!-- Campo oculto para el ID -->
                     <input type="hidden"  name="id_proveedor" value="<?php echo $datosProveedor['id_proveedor'] ; ?>" id="id_proveedor">
+           
+          
                     <!-- Campos del formulario -->
                     <h3 class="titulo-registro mb-3">Agregar Soporte</h3>
                     <div class="row">
@@ -828,22 +830,22 @@ include '../componentes/sidebar.php';
                         <div class="col-6">
                         <div class="form-group">
                           <label  for="codigo">Medios</label>
-                            <div class="input-group dropdown" id="dropdown5">
-                                <div class="sell input-group-prepend">
-                                    <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
-                                </div>
-                                <div class="selected-options" onclick="toggleDropdown()"></div>
-                                <button type="button" class="dropdown-button" style="display:none;">Select Medios</button>
-                                <div class="dropdown-content">
-                                    <?php foreach ($medios as $medio) : ?>
-                                        <label>
-                                            <input type="checkbox" name="id_medios[]" value="<?php echo $medio['id']; ?>">
-                                            <?php echo $medio['NombredelMedio']; ?>
-                                        </label>
-                                    <?php endforeach; ?>
-                                </div>
-                            </div>
-                            </div>
+<div id="dropdown4" class="input-group dropdown" >
+    <div class="sell input-group-prepend">
+        <span class="input-group-text"><i class="fas fa-dollar-sign"></i></span>
+    </div>
+    <div class="selected-options" onclick="toggleDropdown()"></div>
+    <button type="button" class="dropdown-button" style="display:none;">Select Medios</button>
+    <div class="dropdown-content">
+        <?php foreach ($medios as $medio) : ?>
+            <label>
+                <input type="checkbox" name="id_medios[]" value="<?php echo $medio['id']; ?>">
+                <?php echo $medio['NombredelMedio']; ?>
+            </label>
+        <?php endforeach; ?>
+    </div>
+</div>
+</div>
                     </div>
                     <div class="row"><label class="opeo"><input type="checkbox" name="revision"> <span>Usar los mismos datos del proveedor</span></label></div>
                    <div class="checklust">
@@ -916,11 +918,11 @@ include '../componentes/sidebar.php';
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-location-arrow"></i></span>
                                         </div>
-                                        <select class="sesel form-select" name="id_region" id="regionx" required>
-                                            <?php foreach ($regiones as $regione) : ?>
-                                                <option value="<?php echo $regione['id']; ?>"><?php echo $regione['nombreRegion']; ?></option>
-                                            <?php endforeach; ?>
-                                        </select>
+                                        <select class="sesel form-select" name="id_region" id="regionxx" required>
+                                    <?php foreach ($regiones as $regione) : ?>
+                                        <option value="<?php echo $regione['id']; ?>"><?php echo $regione['nombreRegion']; ?></option>
+                                    <?php endforeach; ?>
+                                </select>
                                     </div>
                                     <label class="labelforms" for="codigo">Teléfono celular</label>
                                     <div class="input-group">
@@ -945,13 +947,13 @@ include '../componentes/sidebar.php';
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="fas fa-location-arrow"></i></span>
                                         </div>
-                                        <select class="sesel form-select" name="id_comuna" id="comunax" required>
-                                            <?php foreach ($comunas as $comuna) : ?>
-                                                <option value="<?php echo $comuna['id_comuna']; ?>" data-region="<?php echo $comuna['id_region']; ?>">
-                                                    <?php echo $comuna['nombreComuna']; ?>
-                                                </option>
-                                            <?php endforeach; ?>
-                                        </select>
+                                        <select class="sesel form-select" name="id_comuna" id="comunaxx" required>
+                                <?php foreach ($comunas as $comuna) : ?>
+                                    <option value="<?php echo $comuna['id_comuna']; ?>" data-region="<?php echo $comuna['id_region']; ?>">
+                                        <?php echo $comuna['nombreComuna']; ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
                                     </div> 
                                     <label class="labelforms"  for="codigo">Teléfono fijo</label>
                                     <div class="input-group">
@@ -978,17 +980,17 @@ include '../componentes/sidebar.php';
                                   
 
                         <input name="razonsoculto" type="hidden">
-                        <input name="nombref" type="hidden">
-                        <input name="rutt" type="hidden">
-                        <input name="giroo" type="hidden">
-                        <input name="nombreRepesentanteO" type="hidden">
-                        <input name="rutRepresent" type="hidden">
-                        <input name="direcciono" type="hidden">
-                        <input name="regiono" type="hidden">
-                        <input name="comunao" type="hidden">
-                        <input name="telCelularo" type="hidden">
-                        <input name="telFijoo" type="hidden">
-                        <input name="emailO" type="hidden">
+                        <input name="nombref" type="hidden" >
+                        <input name="rutt" type="hidden" >
+                        <input name="giroo" type="hidden" >
+                        <input name="nombreRepesentanteO" type="hidden" >
+                        <input name="rutRepresent" type="hidden" >
+                        <input name="direcciono" type="hidden" >
+                        <input name="regiono" type="hidden" >
+                        <input name="comunao" type="hidden" >
+                        <input name="telCelularo" type="hidden" >
+                        <input name="telFijoo" type="hidden" >
+                        <input name="emailO" type="hidden" >
                         <div class="row">
                             <div class="col">
                             <div class="form-group">
@@ -1029,7 +1031,60 @@ function getSoporteData(idSoporte) {
     return soportesMap[idSoporte] || null;
 }
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const modal = document.getElementById('agregarSoportessss');
 
+    modal.addEventListener('show.bs.modal', (event) => {
+        // Obtener el botón que abrió el modal
+        const button = event.relatedTarget;
+
+        // Asignar el ID del proveedor al input oculto en el modal
+    
+        // Asignar los valores de los atributos data-* a los inputs ocultos en el modal
+        modal.querySelector('input[name="id_proveedor"]').value = button.getAttribute('data-id');
+        modal.querySelector('input[name="razonsoculto"]').value = button.getAttribute('data-rso');
+        modal.querySelector('input[name="nombref"]').value = button.getAttribute('data-nfo');
+        modal.querySelector('input[name="rutt"]').value = button.getAttribute('data-rpo');
+        modal.querySelector('input[name="giroo"]').value = button.getAttribute('data-gpo');
+        modal.querySelector('input[name="nombreRepesentanteO"]').value = button.getAttribute('data-nro');
+        modal.querySelector('input[name="rutRepresent"]').value = button.getAttribute('data-rpoo');
+        modal.querySelector('input[name="direcciono"]').value = button.getAttribute('data-dfo');
+        modal.querySelector('input[name="regiono"]').value = button.getAttribute('data-iro');
+        modal.querySelector('input[name="comunao"]').value = button.getAttribute('data-ico');
+        modal.querySelector('input[name="telCelularo"]').value = button.getAttribute('data-tco');
+        modal.querySelector('input[name="telFijoo"]').value = button.getAttribute('data-tfo');
+        modal.querySelector('input[name="emailO"]').value = button.getAttribute('data-elo');
+    });
+    const checkbox = modal.querySelector('input[name="revision"]');
+    const checklustElements = modal.querySelectorAll('.checklust');
+    const form = document.getElementById('formualarioSoporteProv');
+
+    const toggleChecklustVisibility = () => {
+        checklustElements.forEach(element => {
+            element.style.display = checkbox.checked ? 'none' : 'grid';
+        });
+    };
+
+    // Escuchar el evento 'change' en el checkbox
+    checkbox.addEventListener('change', toggleChecklustVisibility);
+   checkbox.addEventListener('change', function() {
+        if (this.checked) {
+            checklustElements.forEach(el => el.style.display = 'none');
+            form.querySelectorAll('.form-control').forEach(input => input.removeAttribute('required'));
+        } else {
+            checklustElements.forEach(el => el.style.display = '');
+            form.querySelectorAll('.form-control').forEach(input => input.setAttribute('required', 'required'));
+        }
+    });
+
+    form.addEventListener('submit', submitFormSoporte);
+    // Inicializar la visibilidad al cargar el modal
+    modal.addEventListener('show.bs.modal', () => {
+        toggleChecklustVisibility();
+    });
+});
+</script>
 
 <script>
    

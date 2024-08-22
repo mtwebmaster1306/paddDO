@@ -147,7 +147,7 @@ async function submitForm2(event) {
             alert("Error al registrar el proveedor, intente nuevamente");
         }
     } catch (error) {
-        mostrarExito('Comisión agregada correctamente');
+        mostrarExito('Proveedor registrado correctamente');
         $('#agregarProveedor').modal('hide');
         $('#formularioAgregarProveedor')[0].reset();
         // Asegurarse de que la tabla se haya actualizado

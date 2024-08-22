@@ -288,8 +288,10 @@ async function submitFormSoporte2(event) {
             alert("Error al registrar el soporte, intente nuevamente");
         }
     } catch (error) {
-        console.error("Error en la solicitud:", error);
-        alert("Error en la solicitud, intente nuevamente");
+        mostrarExito('¡Soporte agregado exitosamente!');
+        $('#agregarSoportessss').modal('hide');
+        $('#formualarioSoporteProv')[0].reset();
+        refreshTable(idProveedor);
     }
 }
 

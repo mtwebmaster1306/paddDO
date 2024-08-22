@@ -757,7 +757,41 @@ function confirmarEliminacionSoporte(id) {
 }
 </script>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const expandirProveedorId = urlParams.get('expandir');
+    const nuevoSoporteId = urlParams.get('nuevoSoporte');
 
+    if (expandirProveedorId) {
+        const proveedorRow = document.querySelector(tr[data-proveedor-id="${expandirProveedorId}"]);
+        if (proveedorRow) {
+            const expandIcon = proveedorRow.querySelector('.expand-icon');
+            if (expandIcon) {
+                // Simular un clic en el icono para expandir la fila
+                expandIcon.click();
+                
+                // Esperar a que la fila se expanda completamente
+                setTimeout(() => {
+                    if (nuevoSoporteId) {
+                        const nuevoSoporteRow = document.querySelector(tr[data-soporte-id="${nuevoSoporteId}"]);
+                        if (nuevoSoporteRow) {
+                            // Resaltar el nuevo soporte
+                            nuevoSoporteRow.classList.add('highlight-row');
+                            nuevoSoporteRow.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    } else {
+                        proveedorRow.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 500); // Ajusta este tiempo si es necesario
+            }
+        }
+
+        // Limpiar los parámetros de la URL
+        window.history.replaceState({}, document.title, "ListProveedores.php");
+    }
+});
+</script>
 <script src="assets/js/agregarexistprov.js"></script>
 <script src="assets/js/getmedios.js"></script>
 <script src="assets/js/toggleProveedor.js"></script>
@@ -908,7 +942,7 @@ document.addEventListener('DOMContentLoaded', function() {
         let tooltipContent2 = `${mediosNombres}`;
 
         html += `
-            <tr>
+            <tr data-soporte-id="${soporte.id_soporte}">
                 <td>${id_soporte}</td>
                 <td>${nombreIdentficiador}</td>
                 <td>${razonSocial}</td>
@@ -936,6 +970,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 </script>
+
 <?php include 'querys/modulos/modalagregarexistente.php'; ?>
 <?php include 'querys/modulos/modalagregarproveedor.php'; ?>
 <?php include 'querys/modulos/modalagregarsoporte.php'; ?>

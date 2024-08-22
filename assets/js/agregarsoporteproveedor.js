@@ -86,7 +86,7 @@ async function submitForm(event) {
             if (soporteResponse.ok) {
                 mostrarExito('¡Soporte agregado exitosamente!');
                 $('#agregarSoportessss').modal('hide');
-                location.reload();
+                window.location.href = ListProveedores.php?expandir=${proveedorData[0].id_proveedor}&nuevoSoporte=${nuevoSoporte[0].id_soporte};
             } else {
                 const errorText = await soporteResponse.text();
                 console.error("Error en el registro de soporte:", errorText);
@@ -110,6 +110,46 @@ function mostrarExito(mensaje) {
         showConfirmButton: false,
         timer: 1500
     });
+}
+async function actualizarTablaSoportes(idProveedor) {
+    try {
+        const response = await fetch(get_soportes.php?proveedor_id=${idProveedor});
+        const soportes = await response.json();
+        
+        // Obtener los datos del proveedor (puedes ajustar esto según cómo almacenes los datos del proveedor)
+        const proveedorRow = document.querySelector(tr[data-proveedor-id="${idProveedor}"]);
+        const proveedor = {
+            razonSocial: proveedorRow.dataset.razonSocial,
+            nombreFantasia: proveedorRow.dataset.nombreFantasia,
+            rutProveedor: proveedorRow.dataset.rutProveedor,
+            giroProveedor: proveedorRow.dataset.giroProveedor,
+            nombreRepresentante: proveedorRow.dataset.nombreRepresentante,
+            rutRepresentante: proveedorRow.dataset.rutRepresentante,
+            direccionFacturacion: proveedorRow.dataset.direccionFacturacion,
+            id_region: proveedorRow.dataset.idRegion,
+            id_comuna: proveedorRow.dataset.idComuna,
+            telCelular: proveedorRow.dataset.telCelular,
+            telFijo: proveedorRow.dataset.telFijo,
+            email: proveedorRow.dataset.email,
+            id_proveedor: idProveedor
+        };
+
+        const table = $('#tableExportadora').DataTable();
+        const row = table.row(tr[data-proveedor-id="${idProveedor}"]);
+        
+        if (row.child.isShown()) {
+            // Si la fila está expandida, actualizamos su contenido
+            row.child(formatSoportes(soportes, proveedor)).show();
+        }
+
+        // Actualizamos el contador de soportes en la fila del proveedor
+        const countCell = proveedorRow.querySelector('td:nth-child(7)');
+        if (countCell) {
+            countCell.textContent = soportes.length;
+        }
+    } catch (error) {
+        console.error("Error al actualizar la tabla de soportes:", error);
+    }
 }
 
 document.getElementById('formualarioSoporte').addEventListener('submit', submitForm);
